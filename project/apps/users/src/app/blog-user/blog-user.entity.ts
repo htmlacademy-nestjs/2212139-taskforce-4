@@ -18,7 +18,7 @@ export class BlogUserEntity implements IUser {
 
   public toObject() {
     return {
-      _id: this.id,
+      id: this.id,
       email: this.email,
       firstname: this.firstname,
       lastname: this.lastname,

@@ -11,8 +11,8 @@ export class BlogUserMemoryRepository
   private repository: Record<string, IUser> = {};
 
   public async create(item: BlogUserEntity): Promise<IUser> {
-    const entry = { ...item.toObject(), _id: randomUUID() };
-    this.repository[entry._id] = entry;
+    const entry = { ...item.toObject(), id: randomUUID() };
+    this.repository[entry.id] = entry;
 
     return entry;
   }

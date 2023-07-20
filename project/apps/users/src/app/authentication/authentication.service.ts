@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { BlogUserMemoryRepository } from '../blog-user/blog-user-memory.repository';
-import { createUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UserRole } from '@project/shared/app-types';
 import dayjs from 'dayjs';
 import {
@@ -14,13 +14,13 @@ import {
   AUTH_USER_PASSWORD_WRONG,
 } from './authentication.constant';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
-import { loginUserDto } from './dto/login-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class AuthenticationService {
   constructor(private readonly blogUserRepository: BlogUserMemoryRepository) {}
 
-  public async register(dto: createUserDto) {
+  public async register(dto: CreateUserDto) {
     const { email, dateBirth, firstname, lastname, password } = dto;
 
     const blogUser = {
@@ -44,7 +44,7 @@ export class AuthenticationService {
     return this.blogUserRepository.create(userEntity);
   }
 
-  public async verifyUser(dto: loginUserDto) {
+  public async verifyUser(dto: LoginUserDto) {
     const { email, password } = dto;
 
     const existUser = await this.blogUserRepository.findByEmail(email);
@@ -63,6 +63,10 @@ export class AuthenticationService {
   }
 
   public async getUser(id: string) {
-    return this.blogUserRepository.findById(id);
+    const existUser = this.blogUserRepository.findById(id);
+    if (!existUser) {
+      throw new NotFoundException(AUTH_USER_NOT_FOUND);
+    }
+    return existUser;
   }
 }
