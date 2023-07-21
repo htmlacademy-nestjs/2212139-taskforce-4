@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { City, UserRole } from '@project/shared/app-types';
 import { Expose } from 'class-transformer';
 
 export class UserRdo {
@@ -31,16 +32,23 @@ export class UserRdo {
   public dateBirth: string;
 
   @ApiProperty({
-    description: 'User first name',
-    example: 'Ivan',
+    description: 'User full name',
+    example: 'Ivan Ivanov',
   })
   @Expose()
-  public firstname: string;
+  public name: string;
 
   @ApiProperty({
-    description: 'User last name',
-    example: 'Ivanov',
+    description: 'User city',
+    example: 'Санкт-Петербург',
   })
   @Expose()
-  public lastname: string;
+  public city: City;
+
+  @ApiProperty({
+    description: 'User role',
+    example: 'customer',
+  })
+  @Expose()
+  public role: UserRole;
 }

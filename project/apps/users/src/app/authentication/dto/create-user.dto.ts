@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { City, UserRole } from '@project/shared/app-types';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -14,20 +15,40 @@ export class CreateUserDto {
   public dateBirth: string;
 
   @ApiProperty({
-    description: 'User first name',
-    example: 'Ivan',
+    description: 'User name',
+    example: 'Ivan Ivanov',
   })
-  public firstname: string;
+  public name: string;
 
   @ApiProperty({
-    description: 'User last name',
-    example: 'Ivanov',
+    description: 'About user',
+    example: 'Gamer',
   })
-  public lastname: string;
+  public about?: string;
 
   @ApiProperty({
     description: 'User password',
     example: '123456',
   })
   public password: string;
+
+  @ApiProperty({
+    enum: City,
+    description: 'User city',
+    example: 'Москва',
+  })
+  public city: City;
+
+  @ApiProperty({
+    enum: UserRole,
+    description: 'User role',
+    example: 'customer',
+  })
+  public role: UserRole;
+
+  @ApiProperty({
+    description: 'User avatar filepath',
+    example: './images/user.png',
+  })
+  public avatar?: string;
 }

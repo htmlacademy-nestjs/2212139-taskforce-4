@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
@@ -14,6 +15,7 @@ import { fillObject } from '@project/util/util-core';
 import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -55,5 +57,21 @@ export class AuthenticationController {
   public async show(@Param('id') id: string) {
     const existUser = this.authService.getUser(id);
     return fillObject(UserRdo, existUser);
+  }
+
+  @ApiResponse({
+    type: LoggedUserRdo,
+    status: HttpStatus.OK,
+    description: 'New password changed.',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Password or Login is wrong.',
+  })
+  @Patch('change')
+  @HttpCode(HttpStatus.OK)
+  public async changePassword(@Body() dto: ChangePasswordDto) {
+    const userEntity = await this.authService.changePassword(dto);
+    return fillObject(LoggedUserRdo, userEntity);
   }
 }

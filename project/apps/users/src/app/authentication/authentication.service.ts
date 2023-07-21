@@ -15,22 +15,33 @@ import {
 } from './authentication.constant';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class AuthenticationService {
   constructor(private readonly blogUserRepository: BlogUserMemoryRepository) {}
 
   public async register(dto: CreateUserDto) {
-    const { email, dateBirth, firstname, lastname, password } = dto;
+    const { email, dateBirth, name, city, about, role, password, avatar } = dto;
 
-    const blogUser = {
+    const taskUser = {
       email,
-      firstname,
-      lastname,
-      role: UserRole.Customer,
-      avatar: '',
+      name,
+      about: about || '',
+      city,
+      role: role || UserRole.Customer,
+      avatar: avatar || '',
       dateBirth: dayjs(dateBirth).toDate(),
       passwordHash: '',
+
+      taskCount: 0,
+      newCount: 0,
+      rating: 0,
+      doneCount: 0,
+      failedCount: 0,
+      specialization: [''],
+      ranking: 0,
+      registrationDate: dayjs().toDate(),
     };
 
     const existUser = await this.blogUserRepository.findByEmail(email);
@@ -39,7 +50,7 @@ export class AuthenticationService {
       throw new ConflictException(AUTH_USER_EXISTS);
     }
 
-    const userEntity = await new BlogUserEntity(blogUser).setPassword(password);
+    const userEntity = await new BlogUserEntity(taskUser).setPassword(password);
 
     return this.blogUserRepository.create(userEntity);
   }
@@ -68,5 +79,14 @@ export class AuthenticationService {
       throw new NotFoundException(AUTH_USER_NOT_FOUND);
     }
     return existUser;
+  }
+
+  public async changePassword(dto: ChangePasswordDto) {
+    const { email, password, newPassword } = dto;
+    const blogUser = await this.verifyUser({ email, password });
+    const userEntity = await new BlogUserEntity(blogUser).setPassword(
+      newPassword
+    );
+    return this.blogUserRepository.update(userEntity.id, userEntity);
   }
 }
