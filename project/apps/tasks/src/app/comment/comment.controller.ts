@@ -63,8 +63,11 @@ export class CommentController {
   public async update(
     @Param('id') id: string,
     @Body() updateCommentDto: UpdateCommentDto
-  ) {
-    const updatedComment = this.commentService.update(+id, updateCommentDto);
+  ): Promise<CommentRdo> {
+    const updatedComment = await this.commentService.update(
+      +id,
+      updateCommentDto
+    );
     return fillObject(CommentRdo, updatedComment);
   }
 

@@ -8,18 +8,18 @@ import { Injectable } from '@nestjs/common';
 export class BlogUserMemoryRepository
   implements CRUDRepository<BlogUserEntity, string, IUser>
 {
-  private repository: Record<string, IUser> = {};
+  private repository: Map<string, IUser> = new Map();
 
   public async create(item: BlogUserEntity): Promise<IUser> {
     const entry = { ...item.toObject(), id: randomUUID() };
-    this.repository[entry.id] = entry;
+    this.repository.set(entry.id, entry);
 
     return entry;
   }
 
   public async findById(id: string): Promise<IUser> {
-    if (this.repository[id]) {
-      return { ...this.repository[id] };
+    if (this.repository.get(id)) {
+      return { ...this.repository.get(id) };
     }
 
     return null;
@@ -38,11 +38,11 @@ export class BlogUserMemoryRepository
   }
 
   public async destroy(id: string): Promise<void> {
-    delete this.repository[id];
+    this.repository.delete(id);
   }
 
   public async update(id: string, item: BlogUserEntity): Promise<IUser> {
-    this.repository[id] = { ...item.toObject(), id };
+    this.repository.set(id, { ...item.toObject(), id });
     return this.findById(id);
   }
 }
