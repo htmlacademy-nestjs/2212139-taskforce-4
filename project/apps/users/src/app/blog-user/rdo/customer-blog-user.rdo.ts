@@ -36,7 +36,7 @@ export class CustomerBlogUserRdo {
     example: '2021-03-12',
   })
   @Expose()
-  public dateRegistration: string;
+  public registrationDate: string;
 
   @ApiProperty({
     description: 'User role',

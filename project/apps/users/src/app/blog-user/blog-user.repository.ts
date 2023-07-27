@@ -21,11 +21,13 @@ export class BlogUserRepository
   }
 
   public async destroy(id: string): Promise<void> {
-    this.blogUserModel.deleteOne({ id });
+    this.blogUserModel.deleteOne({ _id: id });
   }
 
   public async findById(id: string): Promise<IUser | null> {
-    return this.blogUserModel.findOne({ id }).exec();
+    console.log(id);
+
+    return this.blogUserModel.findOne({ _id: id }).exec();
   }
 
   public async findByEmail(email: string): Promise<IUser | null> {
