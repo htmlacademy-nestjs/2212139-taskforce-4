@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { City, UserRole } from '@project/shared/app-types';
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 
 export class UserRdo {
   @ApiProperty({
@@ -8,6 +8,7 @@ export class UserRdo {
     example: '13',
   })
   @Expose()
+  @Transform(({ obj }) => obj.id.toString())
   public id: string;
 
   @ApiProperty({
