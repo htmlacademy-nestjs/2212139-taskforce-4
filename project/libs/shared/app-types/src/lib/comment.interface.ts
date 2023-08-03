@@ -1,8 +1,8 @@
 export interface Comment {
   id?: number;
   text: string;
-  taskId: number;
+  taskId?: number;
   userId: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }

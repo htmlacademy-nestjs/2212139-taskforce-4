@@ -3,4 +3,5 @@ export interface Review {
   review: string;
   evaluation: number;
   taskId: number;
+  userId: string;
 }
