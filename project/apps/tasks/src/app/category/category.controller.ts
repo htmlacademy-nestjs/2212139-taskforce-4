@@ -27,8 +27,10 @@ export class CategoryController {
   })
   @HttpCode(HttpStatusCode.Created)
   @Post()
-  public async create(@Body() createCategoryDto: CreateCategoryDto) {
-    const newCategory = await this.categoryService.create(createCategoryDto);
+  async create(@Body() createCategoryDto: CreateCategoryDto) {
+    const newCategory = await this.categoryService.createCategory(
+      createCategoryDto
+    );
     return fillObject(CategoryRdo, newCategory);
   }
 
@@ -38,8 +40,8 @@ export class CategoryController {
     description: 'All categories query',
   })
   @Get()
-  public async findAll() {
-    const categories = await this.categoryService.findAll();
+  async findAll() {
+    const categories = await this.categoryService.getCategories();
     return fillObject(CategoryRdo, categories);
   }
 
@@ -49,8 +51,8 @@ export class CategoryController {
     description: 'Find category by id',
   })
   @Get(':id')
-  public async findOne(@Param('id') id: string) {
-    const category = await this.categoryService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const category = await this.categoryService.getCategory(+id);
     return fillObject(CategoryRdo, category);
   }
 
@@ -60,11 +62,11 @@ export class CategoryController {
     description: 'Update category',
   })
   @Patch(':id')
-  public async update(
+  async update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto
   ) {
-    const updatedCategory = await this.categoryService.update(
+    const updatedCategory = await this.categoryService.updateCategory(
       +id,
       updateCategoryDto
     );
@@ -76,8 +78,8 @@ export class CategoryController {
     description: 'Delete category',
   })
   @Delete(':id')
-  public async remove(@Param('id') id: string) {
-    const currentCategory = await this.categoryService.remove(+id);
-    return fillObject(CategoryRdo, currentCategory);
+  @HttpCode(HttpStatusCode.NoContent)
+  async remove(@Param('id') id: string) {
+    this.categoryService.deleteCategory(+id);
   }
 }
