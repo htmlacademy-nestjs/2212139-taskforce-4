@@ -15,9 +15,7 @@ export interface Task {
   address: string;
   city: City;
   status: TaskStatus;
-
-  customerId: string;
-  executerId?: string;
+  userId: string;
   createdAt?: Date;
   updatedAt?: Date;
 

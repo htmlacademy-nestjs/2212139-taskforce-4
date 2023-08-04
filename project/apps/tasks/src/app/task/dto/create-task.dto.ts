@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { City } from '@project/shared/app-types';
 import {
+  IsArray,
   IsDate,
   IsEnum,
   IsNumber,
@@ -33,8 +34,8 @@ export class CreateTaskDto {
     description: 'Category id',
     example: '15',
   })
-  @IsNumber()
-  public categoryId: number;
+  @IsArray()
+  public categories: number[];
 
   @ApiProperty({
     description: 'Price',
@@ -74,4 +75,11 @@ export class CreateTaskDto {
   @IsString()
   @IsEnum(City)
   public city: City;
+
+  @ApiProperty({
+    description: 'userId',
+    example: '23938fadakljk3k2kj23jk2j',
+  })
+  @IsString()
+  public userId?: string;
 }

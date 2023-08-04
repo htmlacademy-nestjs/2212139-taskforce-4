@@ -27,7 +27,7 @@ export class TaskController {
   })
   @HttpCode(HttpStatusCode.Created)
   @Post()
-  public async create(@Body() createTaskDto: CreateTaskDto) {
+  async create(@Body() createTaskDto: CreateTaskDto) {
     const createdTask = await this.taskService.create(createTaskDto);
     return fillObject(TaskRdo, createdTask);
   }
@@ -38,8 +38,9 @@ export class TaskController {
     description: 'All tasks query',
   })
   @Get()
-  public async findAll() {
-    return await this.taskService.findAll();
+  async findAll() {
+    const taskAll = await this.taskService.findAll();
+    return fillObject(TaskRdo, taskAll);
   }
 
   @ApiResponse({
@@ -48,9 +49,9 @@ export class TaskController {
     description: 'Find comment by id',
   })
   @Get(':id')
-  public async findOne(@Param('id') id: string) {
-    const allTasks = await this.taskService.findOne(+id);
-    return fillObject(TaskRdo, allTasks);
+  async findOne(@Param('id') id: string) {
+    const task = await this.taskService.findOne(+id);
+    return fillObject(TaskRdo, task);
   }
 
   @ApiResponse({
@@ -59,10 +60,7 @@ export class TaskController {
     description: 'Update task',
   })
   @Patch(':id')
-  public async update(
-    @Param('id') id: string,
-    @Body() updateTaskDto: UpdateTaskDto
-  ) {
+  async update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     const updatedTask = await this.taskService.update(+id, updateTaskDto);
     return fillObject(TaskRdo, updatedTask);
   }
@@ -73,7 +71,7 @@ export class TaskController {
   })
   @Delete(':id')
   @HttpCode(HttpStatusCode.NoContent)
-  public async remove(@Param('id') id: string) {
-    await this.taskService.remove(+id);
+  async remove(@Param('id') id: string) {
+    this.taskService.remove(+id);
   }
 }

@@ -1,11 +1,19 @@
 import { Entity } from '@project/util/util-types';
-import { Task, Comment, Review, Tag, City } from '@project/shared/app-types';
+import {
+  Task,
+  Comment,
+  Review,
+  Tag,
+  City,
+  TaskStatus,
+  Category,
+} from '@project/shared/app-types';
 
 export class TaskEntity implements Entity<TaskEntity>, Task {
   public id: number;
   public title: string;
   public details: string;
-  public categoryId: number;
+  public categories: Category[];
   public price: number;
   public deadline: Date;
   public image: string;
@@ -14,14 +22,12 @@ export class TaskEntity implements Entity<TaskEntity>, Task {
   public comments: Comment[];
   public review: Review;
   public tags: Tag[];
-  public status: string;
+  public status: TaskStatus;
 
   public customerId: string;
+  public executerId: string;
   public createdAt: Date;
   public updatedAt: Date;
-
-  public statusId: number;
-  public executerId: string;
 
   constructor(post: Task) {
     this.fillEntity(post);
@@ -31,7 +37,7 @@ export class TaskEntity implements Entity<TaskEntity>, Task {
     this.id = entity.id;
     this.title = entity.title;
     this.details = entity.details;
-    this.categoryId = entity.categoryId;
+    this.categories = [...entity.categories];
     this.price = entity.price;
     this.deadline = entity.deadline;
     this.image = entity.image;
@@ -42,7 +48,6 @@ export class TaskEntity implements Entity<TaskEntity>, Task {
     this.tags = [];
     this.status = entity.status;
     this.customerId = entity.customerId;
-    this.status = entity.status;
     this.executerId = entity.executerId;
   }
 
@@ -51,6 +56,7 @@ export class TaskEntity implements Entity<TaskEntity>, Task {
       ...this,
       comments: [...this.comments],
       tags: [...this.tags],
+      categories: [...this.categories],
     };
   }
 }

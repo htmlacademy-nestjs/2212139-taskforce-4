@@ -3,7 +3,7 @@ POST http://localhost:3333/api/categories HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "delivery"
+  "name": "Автомобили"
 }
 
 ###
@@ -28,8 +28,10 @@ PATCH http://localhost:3333/api/categories/1 HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "other name"
+  "name": "Другое имя"
 }
 
 
 ###
+
+

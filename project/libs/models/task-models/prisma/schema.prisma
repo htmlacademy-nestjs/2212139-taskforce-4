@@ -12,33 +12,32 @@ datasource db {
 }
 
 model Task {
-  taskId     Int        @id @default(autoincrement()) @map("task_id")
-  title      String     @default("")
-  details    String     @default("")
-  categories Category[]
-  price      Int
-  deadline   DateTime   @default(now())
-  image      String     @default("")
-  address    String     @default("")
-  city       String     @default("")
-  status     String     @default("new")
+  taskId   Int      @id @default(autoincrement()) @map("task_id")
+  title    String   @default("")
+  details  String   @default("")
+  price    Int
+  deadline DateTime @default(now())
+  image    String   @default("")
+  address  String   @default("")
+  city     String   @default("")
+  status   String   @default("new")
 
-  customerId String? @map("customer_id")
-  executerId String? @map("executor_id")
+  userId String? @map("user_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  tags     Tag[]
-  comments Comment[]
-  review   Review?
+  tags       Tag[]
+  categories Category[]
+  comments   Comment[]
+  review     Review?
 
   @@map("tasks")
 }
 
 model Category {
   categoryId Int    @id @default(autoincrement()) @map("category_id")
-  name       String @default("")
+  name       String @unique @default("")
   task       Task[]
 
   @@map("categories")
@@ -58,7 +57,7 @@ model Comment {
 
 model Tag {
   tagId Int    @id @default(autoincrement()) @map("tag_id")
-  name  String @unique
+  name  String @unique @default("")
   task  Task[]
 
   @@map("tags")

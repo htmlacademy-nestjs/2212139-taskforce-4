@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { City } from '@project/shared/app-types';
+import { Category, City, Tag } from '@project/shared/app-types';
 
 export class TaskRdo {
   @ApiProperty({
@@ -29,7 +29,7 @@ export class TaskRdo {
     example: 'Доставка',
   })
   @Expose()
-  public category: string;
+  public categories: Category[];
 
   @ApiProperty({
     description: 'Price',
@@ -64,7 +64,7 @@ export class TaskRdo {
     example: 'доставка быстро аккуратно',
   })
   @Expose()
-  public tags: string;
+  public tags: Tag[];
 
   @ApiProperty({
     description: 'City',
@@ -78,12 +78,6 @@ export class TaskRdo {
   })
   @Expose()
   public comments: Comment[];
-
-  @ApiProperty({
-    description: 'Customer user id',
-  })
-  @Expose()
-  public customerId: string;
 
   @ApiProperty({
     description: 'Created at',
@@ -107,8 +101,9 @@ export class TaskRdo {
   public status: string;
 
   @ApiProperty({
-    description: 'Executer user id',
+    description: 'userId',
+    example: '383j3j3jh3432kjjhkjgdf',
   })
   @Expose()
-  public executerId: string;
+  public userId: string;
 }
