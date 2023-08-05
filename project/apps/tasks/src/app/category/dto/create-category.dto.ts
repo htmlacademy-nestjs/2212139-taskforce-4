@@ -5,6 +5,7 @@ export class CreateCategoryDto {
   @ApiProperty({
     description: 'Category name',
     example: 'Delivery',
+    required: true,
   })
   @IsString()
   public name: string;

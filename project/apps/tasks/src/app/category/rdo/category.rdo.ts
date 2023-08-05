@@ -5,13 +5,15 @@ export class CategoryRdo {
   @ApiProperty({
     description: 'Category id',
     example: '3',
+    required: true,
   })
   @Expose()
-  public id: number;
+  public categoryId: number;
 
   @ApiProperty({
     description: 'Category name',
     example: 'Delivery',
+    required: true,
   })
   @Expose()
   public name: string;

@@ -16,7 +16,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpStatusCode } from 'axios';
 import { CategoryRdo } from './rdo/category.rdo';
 
-@ApiTags('category')
+@ApiTags('Actions with Categories')
 @Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
@@ -27,8 +27,8 @@ export class CategoryController {
   })
   @HttpCode(HttpStatusCode.Created)
   @Post()
-  async create(@Body() createCategoryDto: CreateCategoryDto) {
-    const newCategory = await this.categoryService.create(createCategoryDto);
+  async create(@Body() dto: CreateCategoryDto) {
+    const newCategory = await this.categoryService.create(dto);
     return fillObject(CategoryRdo, newCategory);
   }
 
@@ -60,14 +60,8 @@ export class CategoryController {
     description: 'Update category',
   })
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateCategoryDto: UpdateCategoryDto
-  ) {
-    const updatedCategory = await this.categoryService.update(
-      +id,
-      updateCategoryDto
-    );
+  async update(@Param('id') id: string, @Body() dto: UpdateCategoryDto) {
+    const updatedCategory = await this.categoryService.update(+id, dto);
     return fillObject(CategoryRdo, updatedCategory);
   }
 

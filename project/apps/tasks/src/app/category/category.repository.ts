@@ -1,4 +1,4 @@
-import { Category } from '@project/shared/app-types';
+import { ICategory } from '@project/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { CRUDRepository } from '@project/util/util-types';
 import { PrismaService } from '../prisma/prisma.service';
@@ -6,11 +6,11 @@ import { CategoryEntity } from './category.entity';
 
 @Injectable()
 export class CategoryRepository
-  implements CRUDRepository<CategoryEntity, number, Category>
+  implements CRUDRepository<CategoryEntity, number, ICategory>
 {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async create(item: CategoryEntity): Promise<Category> {
+  public async create(item: CategoryEntity): Promise<ICategory> {
     return this.prisma.category.create({
       data: { ...item.toObject() },
     });
@@ -19,35 +19,35 @@ export class CategoryRepository
   public async destroy(id: number): Promise<void> {
     await this.prisma.category.delete({
       where: {
-        id,
+        categoryId: id,
       },
     });
   }
 
-  public findById(id: number): Promise<Category | null> {
+  public findById(id: number): Promise<ICategory | null> {
     return this.prisma.category.findFirst({
       where: {
-        id,
+        categoryId: id,
       },
     });
   }
 
-  public find(ids: number[] = []): Promise<Category[]> {
-    return this.prisma.category.findMany({
-      where: {
-        id: {
-          in: ids.length > 0 ? ids : undefined,
-        },
-      },
+  public find(): Promise<ICategory[]> {
+    return this.prisma.category.findMany();
+  }
+
+  public findByName(name: string): Promise<ICategory | null> {
+    return this.prisma.category.findFirst({
+      where: { name },
     });
   }
 
-  public update(id: number, item: CategoryEntity): Promise<Category> {
+  public update(categoryId: number, item: CategoryEntity): Promise<ICategory> {
     return this.prisma.category.update({
       where: {
-        id,
+        categoryId,
       },
-      data: { ...item.toObject(), id },
+      data: { ...item.toObject(), categoryId },
     });
   }
 }

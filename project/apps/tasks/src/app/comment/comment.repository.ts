@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { CRUDRepository } from '@project/util/util-types';
 import { PrismaService } from '../prisma/prisma.service';
 import { CommentEntity } from './comment.entity';
-import { Comment } from '@project/shared/app-types';
+import { IComment } from '@project/shared/app-types';
 
 @Injectable()
 export class CommentRepository
-  implements CRUDRepository<CommentEntity, number, Comment>
+  implements CRUDRepository<CommentEntity, number, IComment>
 {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async create(item: CommentEntity): Promise<Comment> {
+  public async create(item: CommentEntity): Promise<IComment> {
     return this.prisma.comment.create({
       data: { ...item.toObject() },
     });
@@ -24,15 +24,15 @@ export class CommentRepository
     });
   }
 
-  public findById(id: number): Promise<Comment | null> {
+  public findById(commentId: number): Promise<IComment | null> {
     return this.prisma.comment.findFirst({
       where: {
-        id,
+        commentId,
       },
     });
   }
 
-  public find(ids: number[] = []): Promise<Comment[]> {
+  public find(ids: number[] = []): Promise<IComment[]> {
     return this.prisma.comment.findMany({
       where: {
         commentId: {
@@ -42,12 +42,12 @@ export class CommentRepository
     });
   }
 
-  public update(id: number, item: CommentEntity): Promise<Comment> {
+  public update(id: number, item: CommentEntity): Promise<IComment> {
     return this.prisma.comment.update({
       where: {
         commentId: id,
       },
-      data: { ...item.toObject(), id },
+      data: { ...item.toObject(), commentId: id },
     });
   }
 }

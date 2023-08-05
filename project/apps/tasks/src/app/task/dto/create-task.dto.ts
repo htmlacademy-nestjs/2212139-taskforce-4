@@ -37,7 +37,7 @@ export class CreateTaskDto {
     example: '15, 3',
   })
   @IsString()
-  public category: string;
+  public categoryId: number;
 
   @ApiProperty({
     description: 'Comments id',
@@ -86,7 +86,7 @@ export class CreateTaskDto {
     example: 'доставка быстро аккуратно',
   })
   @IsOptional()
-  public tags?: string[];
+  public tags?: number[];
 
   @ApiProperty({
     description: 'City',

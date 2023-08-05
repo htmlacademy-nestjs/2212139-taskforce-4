@@ -1,20 +1,20 @@
-import { Comment } from '@project/shared/app-types';
+import { IComment } from '@project/shared/app-types';
 import { Entity } from '@project/util/util-types';
 
-export class CommentEntity implements Entity<CommentEntity>, Comment {
-  public id: number;
+export class CommentEntity implements Entity<CommentEntity>, IComment {
+  public commentId: number;
   public text: string;
   public userId: string;
   public taskId: number;
-  public createdAt?: Date;
-  public updatedAt?: Date;
+  public createdAt: Date;
+  public updatedAt: Date;
 
-  constructor(comment: Comment) {
+  constructor(comment: IComment) {
     this.fillEntity(comment);
   }
 
-  public fillEntity(entity: Comment) {
-    this.id = entity.id;
+  public fillEntity(entity: IComment) {
+    this.commentId = entity.commentId;
     this.text = entity.text;
     this.userId = entity.userId;
     this.taskId = entity.taskId;

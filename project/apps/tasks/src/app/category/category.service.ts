@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { Category } from '@project/shared/app-types';
+import { ICategory } from '@project/shared/app-types';
 import { CategoryRepository } from './category.repository';
 import { CategoryEntity } from './category.entity';
 
@@ -9,7 +9,7 @@ import { CategoryEntity } from './category.entity';
 export class CategoryService {
   constructor(private readonly categoryRepository: CategoryRepository) {}
 
-  async create(dto: CreateCategoryDto): Promise<Category> {
+  async create(dto: CreateCategoryDto): Promise<ICategory> {
     const categoryEntity = new CategoryEntity(dto);
     return this.categoryRepository.create(categoryEntity);
   }
@@ -18,15 +18,25 @@ export class CategoryService {
     this.categoryRepository.destroy(id);
   }
 
-  async findOne(id: number): Promise<Category> {
+  async findOrCreate(name: string): Promise<ICategory> {
+    const existCategory = await this.categoryRepository.findByName(name);
+
+    if (!existCategory) {
+      return this.create({ name });
+    }
+
+    return existCategory;
+  }
+
+  async findOne(id: number): Promise<ICategory> {
     return this.categoryRepository.findById(id);
   }
 
-  async findAll(): Promise<Category[]> {
+  async findAll(): Promise<ICategory[]> {
     return this.categoryRepository.find();
   }
 
-  async update(id: number, dto: UpdateCategoryDto): Promise<Category> {
+  async update(id: number, dto: UpdateCategoryDto): Promise<ICategory> {
     return this.categoryRepository.update(id, new CategoryEntity(dto));
   }
 }

@@ -18,15 +18,8 @@ export class TaskRepository
         comments: {
           connect: [],
         },
-        category: {
-          connectOrCreate: {
-            where: {
-              name: entityData.category.name,
-            },
-            create: {
-              name: entityData.category.name,
-            },
-          },
+        responses: {
+          connect: [],
         },
         tags: {
           connect: entityData.tags.map((tag) => ({
@@ -38,6 +31,7 @@ export class TaskRepository
         comments: true,
         tags: true,
         category: true,
+        responses: true,
       },
     });
   }
@@ -59,6 +53,7 @@ export class TaskRepository
         comments: true,
         category: true,
         tags: true,
+        responses: true,
       },
     });
   }

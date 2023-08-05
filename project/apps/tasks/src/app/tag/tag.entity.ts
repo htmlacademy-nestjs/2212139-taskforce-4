@@ -1,20 +1,19 @@
-import { Tag } from '@project/shared/app-types';
+import { ITag } from '@project/shared/app-types';
 import { Entity } from '@project/util/util-types';
 
-export class TagEntity implements Entity<TagEntity>, Tag {
-  public id: number;
+export class TagEntity implements Entity<TagEntity>, ITag {
+  public tagId: number;
   public name: string;
-  public taskId: number;
   public createdAt?: Date;
 
-  constructor(tag: Tag) {
+  constructor(tag: ITag) {
     this.fillEntity(tag);
   }
 
-  public fillEntity(entity: Tag) {
-    this.id = entity.id;
+  public fillEntity(entity: ITag) {
+    this.tagId = entity.tagId;
     this.name = entity.name;
-    this.taskId = entity.taskId;
+    this.createdAt = new Date();
   }
 
   public toObject(): TagEntity {
