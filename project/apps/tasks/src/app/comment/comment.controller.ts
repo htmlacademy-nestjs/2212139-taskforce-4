@@ -27,7 +27,7 @@ export class CommentController {
   })
   @HttpCode(HttpStatusCode.Created)
   @Post()
-  public async create(@Body() createCommentDto: CreateCommentDto) {
+  async create(@Body() createCommentDto: CreateCommentDto) {
     const newComment = await this.commentService.create(createCommentDto);
     return fillObject(CommentRdo, newComment);
   }
@@ -38,7 +38,7 @@ export class CommentController {
     description: 'All comments query',
   })
   @Get()
-  public async findAll() {
+  async findAll() {
     const allComments = await this.commentService.findAll();
     return fillObject(CommentRdo, allComments);
   }
@@ -49,7 +49,7 @@ export class CommentController {
     description: 'Find comment by id',
   })
   @Get(':id')
-  public async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     const currentComment = await this.commentService.findOne(+id);
     return fillObject(CommentRdo, currentComment);
   }
@@ -60,7 +60,7 @@ export class CommentController {
     description: 'Update comment',
   })
   @Patch(':id')
-  public async update(
+  async update(
     @Param('id') id: string,
     @Body() updateCommentDto: UpdateCommentDto
   ): Promise<CommentRdo> {
@@ -77,7 +77,7 @@ export class CommentController {
   })
   @Delete(':id')
   @HttpCode(HttpStatusCode.NoContent)
-  public async remove(@Param('id') id: string) {
-    await this.commentService.remove(+id);
+  async remove(@Param('id') id: string) {
+    this.commentService.remove(+id);
   }
 }

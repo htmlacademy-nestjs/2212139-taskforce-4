@@ -18,6 +18,8 @@ export class CommentEntity implements Entity<CommentEntity>, Comment {
     this.text = entity.text;
     this.userId = entity.userId;
     this.taskId = entity.taskId;
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
   }
 
   public toObject(): CommentEntity {

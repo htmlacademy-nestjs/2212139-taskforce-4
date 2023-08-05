@@ -2,29 +2,42 @@ import { Injectable } from '@nestjs/common';
 import { CRUDRepository } from '@project/util/util-types';
 import { PrismaService } from '../prisma/prisma.service';
 import { TaskEntity } from './task.entity';
-import { Task } from '@project/shared/app-types';
+import { ITask } from '@project/shared/app-types';
 
 @Injectable()
 export class TaskRepository
-  implements CRUDRepository<TaskEntity, number, Task>
+  implements CRUDRepository<TaskEntity, number, ITask>
 {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async create(item: TaskEntity): Promise<Task> {
+  public async create(item: TaskEntity): Promise<ITask> {
     const entityData = item.toObject();
-    return this.prisma.task.create({
+    return await this.prisma.task.create({
       data: {
         ...entityData,
         comments: {
           connect: [],
         },
-        categories: {
-          connect: entityData.categories.map(({ id }) => ({ id })),
+        category: {
+          connectOrCreate: {
+            where: {
+              name: entityData.category.name,
+            },
+            create: {
+              name: entityData.category.name,
+            },
+          },
+        },
+        tags: {
+          connect: entityData.tags.map((tag) => ({
+            tagId: tag.tagId,
+          })),
         },
       },
       include: {
         comments: true,
-        categories: true,
+        tags: true,
+        category: true,
       },
     });
   }
@@ -37,28 +50,29 @@ export class TaskRepository
     });
   }
 
-  public async findById(taskId: number): Promise<Task | null> {
+  public async findById(taskId: number): Promise<ITask | null> {
     return this.prisma.task.findFirst({
       where: {
         taskId,
       },
       include: {
         comments: true,
-        categories: true,
+        category: true,
+        tags: true,
       },
     });
   }
 
-  public find(): Promise<Task[]> {
-    return this.prisma.task.findMany({
+  public async find(): Promise<ITask[]> {
+    return await this.prisma.task.findMany({
       include: {
         comments: true,
-        categories: true,
+        category: true,
       },
     });
   }
 
-  public update(_id: number, _item: TaskEntity): Promise<Task> {
+  public async update(_id: number, _item: TaskEntity): Promise<ITask> {
     return Promise.resolve(undefined);
   }
 }

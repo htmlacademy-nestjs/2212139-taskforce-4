@@ -1,17 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { City } from '@project/shared/app-types';
+import { City, TaskStatus } from '@project/shared/app-types';
 import {
   IsArray,
   IsDate,
   IsEnum,
   IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
   Length,
   Min,
   MinDate,
 } from 'class-validator';
 import { ValidTask } from '../task.constant';
+import { Transform } from 'class-transformer';
 
 export class CreateTaskDto {
   @ApiProperty({
@@ -32,18 +34,34 @@ export class CreateTaskDto {
 
   @ApiProperty({
     description: 'Category id',
-    example: '15',
+    example: '15, 3',
+  })
+  @IsString()
+  public category: string;
+
+  @ApiProperty({
+    description: 'Comments id',
+    example: '15, 12, 3',
   })
   @IsArray()
-  public categories: number[];
+  public comments?: string[];
+
+  @ApiProperty({
+    description: 'Изображение',
+    example: 'гвоздь.jpg',
+  })
+  @IsOptional()
+  public image?: string;
 
   @ApiProperty({
     description: 'Price',
     example: '1500',
   })
   @IsNumber()
+  @IsOptional()
+  @IsPositive()
   @Min(ValidTask.MinPrice)
-  public price: number;
+  public price?: number;
 
   @ApiProperty({
     description: 'Deadline',
@@ -52,21 +70,23 @@ export class CreateTaskDto {
   @IsDate()
   @MinDate(new Date())
   @IsOptional()
-  public deadline: Date;
+  public deadline?: Date;
 
   @ApiProperty({
     description: 'Workplace address',
     example: 'Address ...',
   })
   @IsString()
+  @IsOptional()
   @Length(ValidTask.MinAddressLength, ValidTask.MaxAddressLength)
-  public address: string;
+  public address?: string;
 
   @ApiProperty({
     description: 'Tags',
     example: 'доставка быстро аккуратно',
   })
-  public tags: string[];
+  @IsOptional()
+  public tags?: string[];
 
   @ApiProperty({
     description: 'City',
@@ -74,6 +94,7 @@ export class CreateTaskDto {
   })
   @IsString()
   @IsEnum(City)
+  @Transform(({ value }) => value as City)
   public city: City;
 
   @ApiProperty({
@@ -81,5 +102,13 @@ export class CreateTaskDto {
     example: '23938fadakljk3k2kj23jk2j',
   })
   @IsString()
-  public userId?: string;
+  public userId: string;
+
+  @ApiProperty({
+    description: 'Текущий статус задачи',
+    example: 'new',
+  })
+  @IsEnum(TaskStatus)
+  @Transform(({ value }) => value as TaskStatus)
+  public status: TaskStatus;
 }

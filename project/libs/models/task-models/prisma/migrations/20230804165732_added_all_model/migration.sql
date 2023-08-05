@@ -3,15 +3,13 @@ CREATE TABLE "tasks" (
     "task_id" SERIAL NOT NULL,
     "title" TEXT NOT NULL DEFAULT '',
     "details" TEXT NOT NULL DEFAULT '',
-    "category_id" INTEGER NOT NULL,
     "price" INTEGER NOT NULL,
-    "deadline" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "deadline" TIMESTAMP(3) NOT NULL DEFAULT NOW() + INTERVAL '7 DAYS',
     "image" TEXT NOT NULL DEFAULT '',
     "address" TEXT NOT NULL DEFAULT '',
     "city" TEXT NOT NULL DEFAULT '',
     "status" TEXT NOT NULL DEFAULT 'new',
-    "customer_id" TEXT,
-    "executor_id" TEXT,
+    "user_id" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -41,7 +39,7 @@ CREATE TABLE "comments" (
 -- CreateTable
 CREATE TABLE "tags" (
     "tag_id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
+    "name" TEXT NOT NULL DEFAULT '',
 
     CONSTRAINT "tags_pkey" PRIMARY KEY ("tag_id")
 );
@@ -50,10 +48,17 @@ CREATE TABLE "tags" (
 CREATE TABLE "reviews" (
     "review_id" SERIAL NOT NULL,
     "task_id" INTEGER NOT NULL,
+    "user_id" TEXT NOT NULL,
     "review" TEXT NOT NULL DEFAULT '',
     "evaluation" INTEGER NOT NULL,
 
     CONSTRAINT "reviews_pkey" PRIMARY KEY ("review_id")
+);
+
+-- CreateTable
+CREATE TABLE "_CategoryToTask" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
 );
 
 -- CreateTable
@@ -63,10 +68,19 @@ CREATE TABLE "_TagToTask" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "categories_name_key" ON "categories"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "tags_name_key" ON "tags"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "reviews_task_id_key" ON "reviews"("task_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_CategoryToTask_AB_unique" ON "_CategoryToTask"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_CategoryToTask_B_index" ON "_CategoryToTask"("B");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_TagToTask_AB_unique" ON "_TagToTask"("A", "B");
@@ -75,13 +89,16 @@ CREATE UNIQUE INDEX "_TagToTask_AB_unique" ON "_TagToTask"("A", "B");
 CREATE INDEX "_TagToTask_B_index" ON "_TagToTask"("B");
 
 -- AddForeignKey
-ALTER TABLE "tasks" ADD CONSTRAINT "tasks_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("category_id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "comments" ADD CONSTRAINT "comments_task_id_fkey" FOREIGN KEY ("task_id") REFERENCES "tasks"("task_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_task_id_fkey" FOREIGN KEY ("task_id") REFERENCES "tasks"("task_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_CategoryToTask" ADD CONSTRAINT "_CategoryToTask_A_fkey" FOREIGN KEY ("A") REFERENCES "categories"("category_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_CategoryToTask" ADD CONSTRAINT "_CategoryToTask_B_fkey" FOREIGN KEY ("B") REFERENCES "tasks"("task_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_TagToTask" ADD CONSTRAINT "_TagToTask_A_fkey" FOREIGN KEY ("A") REFERENCES "tags"("tag_id") ON DELETE CASCADE ON UPDATE CASCADE;

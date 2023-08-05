@@ -28,9 +28,7 @@ export class CategoryController {
   @HttpCode(HttpStatusCode.Created)
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
-    const newCategory = await this.categoryService.createCategory(
-      createCategoryDto
-    );
+    const newCategory = await this.categoryService.create(createCategoryDto);
     return fillObject(CategoryRdo, newCategory);
   }
 
@@ -41,7 +39,7 @@ export class CategoryController {
   })
   @Get()
   async findAll() {
-    const categories = await this.categoryService.getCategories();
+    const categories = await this.categoryService.findAll();
     return fillObject(CategoryRdo, categories);
   }
 
@@ -52,7 +50,7 @@ export class CategoryController {
   })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const category = await this.categoryService.getCategory(+id);
+    const category = await this.categoryService.findOne(+id);
     return fillObject(CategoryRdo, category);
   }
 
@@ -66,7 +64,7 @@ export class CategoryController {
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto
   ) {
-    const updatedCategory = await this.categoryService.updateCategory(
+    const updatedCategory = await this.categoryService.update(
       +id,
       updateCategoryDto
     );
@@ -80,6 +78,6 @@ export class CategoryController {
   @Delete(':id')
   @HttpCode(HttpStatusCode.NoContent)
   async remove(@Param('id') id: string) {
-    this.categoryService.deleteCategory(+id);
+    this.categoryService.delete(+id);
   }
 }

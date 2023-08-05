@@ -11,11 +11,12 @@ async function fillDb() {
       details: 'Шкаф новый. Инструкция имеется',
       price: 300,
       address: 'ул. Мебельная д. 21 кв. 10',
-      city: 'Санкт-Петербург',
-      customerId: '22',
+      city: 'Владивосток',
+      userId: '22',
       status: 'new',
-      categories: {
+      category: {
         create: {
+          categoryId: 2,
           name: 'мебель',
         },
       },
@@ -34,7 +35,7 @@ async function fillDb() {
       tags: {
         create: [
           {
-            name: 'качество',
+            name: 'ответственно',
           },
           {
             name: 'сборка',
@@ -48,7 +49,7 @@ async function fillDb() {
         create: {
           review: 'Отличная работа!',
           evaluation: 5,
-          userId: 'kdfa9d8fa8',
+          userId: '22',
         },
       },
     },
@@ -63,11 +64,11 @@ async function fillDb() {
       price: 200,
       address: 'ул. Гагарина д. 11 кв. 42',
       city: 'Москва',
-      customerId: '12',
-      executerId: '15',
+      userId: '15',
       status: 'new',
-      categories: {
+      category: {
         create: {
+          categoryId: 1,
           name: 'фильтр',
         },
       },
@@ -86,13 +87,13 @@ async function fillDb() {
       tags: {
         create: [
           {
-            name: 'очистка',
+            name: 'фильтр',
           },
           {
             name: 'вода',
           },
           {
-            name: 'быстро',
+            name: 'качество',
           },
         ],
       },
@@ -100,7 +101,7 @@ async function fillDb() {
         create: {
           review: 'Очень даже good!',
           evaluation: 4,
-          userId: 'ddkdkk2k',
+          userId: '15',
         },
       },
     },

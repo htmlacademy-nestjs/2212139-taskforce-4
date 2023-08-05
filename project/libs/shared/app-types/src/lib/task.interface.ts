@@ -1,26 +1,27 @@
-import { Category } from './category.interface.js';
-import { Comment } from './comment.interface.js';
-import { Review } from './review.interface.js';
-import { Tag } from './tag.interface.js';
-import { TaskStatus } from './task-status.enum.js';
-import { City } from './user-city.enum.js';
+import { IComment } from './comment.interface';
+import { IResponse } from './response.interface';
+import { IReview } from './review.interface';
+import { ITag } from './tag.interface';
 
-export interface Task {
-  id?: number;
+export interface ITask {
+  taskId?: number;
   title: string;
   details: string;
-  price: number;
-  deadline: Date;
+  categoryId: number;
+  price?: number;
+  deadline?: Date;
   image?: string;
-  address: string;
-  city: City;
-  status: TaskStatus;
+  address?: string;
+  city: string;
+  status: string;
   userId: string;
   createdAt?: Date;
   updatedAt?: Date;
+  responsesCount?: number;
+  commentsCount?: number;
 
-  tags: Tag[];
-  comments: Comment[];
-  categories: Category[];
-  review?: Review;
+  tags?: ITag[];
+  comments?: IComment[];
+  responses: IResponse[];
+  review?: IReview;
 }

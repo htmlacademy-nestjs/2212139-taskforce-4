@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "tasks" ALTER COLUMN "deadline" SET DEFAULT NOW() + INTERVAL '7 DAYS';

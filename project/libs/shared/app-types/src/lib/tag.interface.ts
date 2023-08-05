@@ -1,5 +1,5 @@
-export interface Tag {
-  id?: number;
+export interface ITag {
+  tagId?: number;
   name: string;
-  taskId: number;
+  createdAt: Date;
 }

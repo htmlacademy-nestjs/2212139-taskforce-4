@@ -10,28 +10,35 @@ import { Task } from '@project/shared/app-types';
 export class TaskService {
   constructor(
     private readonly taskRepository: TaskRepository,
-    private readonly categoryRepository: CategoryRepository
+    private readonly categoryRepository: CategoryRepository,
+    private readonly tagRepository: TagsRepository
   ) {}
 
-  async createTask(dto: CreateTaskDto): Promise<Task> {
+  async create(dto: CreateTaskDto): Promise<Task> {
     const categories = await this.categoryRepository.find(dto.categories);
-    const taskEntity = new TaskEntity({ ...dto, categories, comments: [] });
+    const tags = await this.tagRepository.find(dto.tags);
+    const taskEntity = new TaskEntity({
+      ...dto,
+      categories,
+      tags,
+      comments: [],
+    });
     return this.taskRepository.create(taskEntity);
   }
 
-  async deletePost(id: number): Promise<void> {
-    this.blogPostRepository.destroy(id);
+  async delete(id: number): Promise<void> {
+    this.taskRepository.destroy(id);
   }
 
-  async getPost(id: number): Promise<Post> {
-    return this.blogPostRepository.findById(id);
+  async findOne(id: number): Promise<Task> {
+    return this.taskRepository.findById(id);
   }
 
-  async getPosts(): Promise<Post[]> {
-    return this.blogPostRepository.find();
+  async findAll(): Promise<Task[]> {
+    return this.taskRepository.find();
   }
 
-  async updatePost(_id: number, _dto: UpdatePostDto): Promise<Post> {
+  async update(_id: number, _dto: UpdateTaskDto): Promise<Task> {
     throw new Error('Not implemented…');
   }
 }

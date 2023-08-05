@@ -1,6 +1,7 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { Category, City, Tag } from '@project/shared/app-types';
+import { ICategory, City, TaskStatus } from '@project/shared/app-types';
+import { Tag } from '@prisma/client';
 
 export class TaskRdo {
   @ApiProperty({
@@ -8,7 +9,7 @@ export class TaskRdo {
     example: '18',
   })
   @Expose({ name: 'taskId' })
-  public id: number;
+  public taskId: number;
 
   @ApiProperty({
     description: 'Task title',
@@ -29,7 +30,7 @@ export class TaskRdo {
     example: 'Доставка',
   })
   @Expose()
-  public categories: Category[];
+  public category: ICategory;
 
   @ApiProperty({
     description: 'Price',
@@ -64,6 +65,7 @@ export class TaskRdo {
     example: 'доставка быстро аккуратно',
   })
   @Expose()
+  @Transform(({ value }) => value.map((tag: Tag) => tag.name))
   public tags: Tag[];
 
   @ApiProperty({
@@ -72,12 +74,6 @@ export class TaskRdo {
   })
   @Expose()
   public city: City;
-
-  @ApiProperty({
-    description: 'Comments list',
-  })
-  @Expose()
-  public comments: Comment[];
 
   @ApiProperty({
     description: 'Created at',
@@ -98,7 +94,21 @@ export class TaskRdo {
     example: 'new',
   })
   @Expose()
-  public status: string;
+  public status: TaskStatus;
+
+  @ApiProperty({
+    description: 'Количество отликов.',
+    example: '',
+  })
+  @Expose()
+  public responsesCont: number;
+
+  @ApiProperty({
+    description: 'Количество комментариев.',
+    example: '',
+  })
+  @Expose()
+  public commentsCount: number;
 
   @ApiProperty({
     description: 'userId',
