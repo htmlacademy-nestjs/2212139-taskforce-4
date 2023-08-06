@@ -24,6 +24,14 @@ export class CommentRepository
     });
   }
 
+  public findByTaskId(taskId: number): Promise<IComment[]> {
+    return this.prisma.comment.findMany({
+      where: {
+        taskId,
+      },
+    });
+  }
+
   public findById(commentId: number): Promise<IComment | null> {
     return this.prisma.comment.findFirst({
       where: {

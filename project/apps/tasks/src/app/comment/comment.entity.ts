@@ -7,7 +7,6 @@ export class CommentEntity implements Entity<CommentEntity>, IComment {
   public userId: string;
   public taskId: number;
   public createdAt: Date;
-  public updatedAt: Date;
 
   constructor(comment: IComment) {
     this.fillEntity(comment);
@@ -19,7 +18,6 @@ export class CommentEntity implements Entity<CommentEntity>, IComment {
     this.userId = entity.userId;
     this.taskId = entity.taskId;
     this.createdAt = new Date();
-    this.updatedAt = new Date();
   }
 
   public toObject(): CommentEntity {

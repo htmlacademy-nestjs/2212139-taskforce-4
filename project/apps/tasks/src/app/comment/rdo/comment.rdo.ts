@@ -7,7 +7,7 @@ export class CommentRdo {
     example: '3',
   })
   @Expose({ name: 'commentId' })
-  public id: number;
+  public commentId: string;
 
   @ApiProperty({
     description: 'Comment text',
@@ -24,7 +24,7 @@ export class CommentRdo {
   public userId: string;
 
   @ApiProperty({
-    description: 'Created at',
+    description: 'Дата создания комментария',
     example: '2023-07-12',
   })
   @Expose()

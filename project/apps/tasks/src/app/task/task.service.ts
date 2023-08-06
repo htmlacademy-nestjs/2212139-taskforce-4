@@ -39,4 +39,24 @@ export class TaskService {
   async update(_id: number, _dto: UpdateTaskDto): Promise<ITask> {
     throw new Error('Not implemented…');
   }
+
+  async incrementCommentsCounter(
+    taskId: number,
+    increment: number
+  ): Promise<void> {
+    const task = await this.taskRepository.findById(taskId);
+    let count = task.commentsCount + increment;
+    count = count < 0 ? 0 : count;
+    return this.taskRepository.updateCommentsCounter(taskId, count);
+  }
+
+  async incrementResponsesCounter(
+    taskId: number,
+    increment: number
+  ): Promise<void> {
+    const task = await this.taskRepository.findById(taskId);
+    let count = task.responsesCount + increment;
+    count = count < 0 ? 0 : count;
+    return this.taskRepository.updateResponsesCounter(taskId, count);
+  }
 }

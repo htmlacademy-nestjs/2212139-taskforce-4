@@ -67,6 +67,19 @@ export class TaskRepository
     });
   }
 
+  public async updateCommentsCounter(taskId: number, commentsCount: number) {
+    this.prisma.task.update({
+      where: { taskId },
+      data: { commentsCount },
+    });
+  }
+  public async updateResponsesCounter(taskId: number, responsesCount: number) {
+    this.prisma.task.update({
+      where: { taskId },
+      data: { responsesCount },
+    });
+  }
+
   public async update(_id: number, _item: TaskEntity): Promise<ITask> {
     return Promise.resolve(undefined);
   }

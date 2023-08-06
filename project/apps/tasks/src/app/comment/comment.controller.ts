@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   HttpCode,
@@ -11,12 +10,11 @@ import {
 import { fillObject } from '@project/util/util-core';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpStatusCode } from 'axios';
 import { CommentRdo } from './rdo/comment.rdo';
 
-@ApiTags('comment')
+@ApiTags('Actions with task comment')
 @Controller('comments')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
@@ -27,48 +25,20 @@ export class CommentController {
   })
   @HttpCode(HttpStatusCode.Created)
   @Post()
-  async create(@Body() createCommentDto: CreateCommentDto) {
-    const newComment = await this.commentService.create(createCommentDto);
+  async create(@Body() dto: CreateCommentDto) {
+    const newComment = await this.commentService.create(dto);
     return fillObject(CommentRdo, newComment);
   }
 
   @ApiResponse({
-    type: CommentRdo,
+    type: [CommentRdo],
     status: HttpStatusCode.Ok,
-    description: 'All comments query',
-  })
-  @Get()
-  async findAll() {
-    const allComments = await this.commentService.findAll();
-    return fillObject(CommentRdo, allComments);
-  }
-
-  @ApiResponse({
-    type: CommentRdo,
-    status: HttpStatusCode.Ok,
-    description: 'Find comment by id',
+    description: 'Find all comments by TaskId',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const currentComment = await this.commentService.findOne(+id);
+  async findTaskComments(@Param('id') id: string) {
+    const currentComment = await this.commentService.findCommentsByTaskId(+id);
     return fillObject(CommentRdo, currentComment);
-  }
-
-  @ApiResponse({
-    type: CommentRdo,
-    status: HttpStatusCode.Ok,
-    description: 'Update comment',
-  })
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateCommentDto: UpdateCommentDto
-  ): Promise<CommentRdo> {
-    const updatedComment = await this.commentService.update(
-      +id,
-      updateCommentDto
-    );
-    return fillObject(CommentRdo, updatedComment);
   }
 
   @ApiResponse({

@@ -7,6 +7,7 @@ import { TaskModule } from './task/task.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ResponseModule } from './response/response.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AppService } from './app.service';
     ReviewModule,
     TagsModule,
     TaskModule,
+    ResponseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
