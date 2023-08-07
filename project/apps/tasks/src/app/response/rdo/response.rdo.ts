@@ -8,7 +8,7 @@ export class ResponseRdo {
     required: true,
   })
   @Expose()
-  public responseId: number;
+  public responseId: string;
 
   @ApiProperty({
     description: 'Уникальный идентификатор задания',
@@ -16,7 +16,7 @@ export class ResponseRdo {
     required: true,
   })
   @Expose()
-  public taskId: number;
+  public taskId: string;
 
   @ApiProperty({
     description: 'Уникальный идентификатор исполнителя',
@@ -32,5 +32,5 @@ export class ResponseRdo {
     required: true,
   })
   @Expose()
-  public offerPrice: number;
+  public offerPrice: string;
 }

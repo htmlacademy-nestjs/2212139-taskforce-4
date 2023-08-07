@@ -8,7 +8,7 @@ export class CategoryRdo {
     required: true,
   })
   @Expose()
-  public categoryId: number;
+  public categoryId: string;
 
   @ApiProperty({
     description: 'Category name',

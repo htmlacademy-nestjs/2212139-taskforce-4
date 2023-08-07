@@ -30,4 +30,18 @@ export class CreateReviewDto {
   })
   @IsNumber()
   public taskId: number;
+
+  @ApiProperty({
+    description: 'User id',
+    example: '4',
+  })
+  @IsNumber()
+  public userId: string;
+
+  @ApiProperty({
+    description: 'Id исполнителя',
+    example: '4',
+  })
+  @IsNumber()
+  public executorId: string;
 }

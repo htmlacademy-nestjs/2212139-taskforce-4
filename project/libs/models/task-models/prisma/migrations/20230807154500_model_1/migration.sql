@@ -1,6 +1,3 @@
--- CreateEnum
-CREATE TYPE "TaskStatus" AS ENUM ('New', 'Canceled', 'InWork', 'Done', 'Failed');
-
 -- CreateTable
 CREATE TABLE "tasks" (
     "task_id" SERIAL NOT NULL,
@@ -12,7 +9,7 @@ CREATE TABLE "tasks" (
     "image" TEXT DEFAULT '',
     "address" TEXT DEFAULT '',
     "city" TEXT NOT NULL DEFAULT 'Москва',
-    "status" TEXT NOT NULL DEFAULT 'new',
+    "status" TEXT NOT NULL DEFAULT 'New',
     "user_id" TEXT,
     "executor_id" TEXT DEFAULT '',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -102,7 +99,7 @@ ALTER TABLE "tasks" ADD CONSTRAINT "tasks_category_id_fkey" FOREIGN KEY ("catego
 ALTER TABLE "comments" ADD CONSTRAINT "comments_task_id_fkey" FOREIGN KEY ("task_id") REFERENCES "tasks"("task_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "responses" ADD CONSTRAINT "responses_task_id_fkey" FOREIGN KEY ("task_id") REFERENCES "tasks"("task_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "responses" ADD CONSTRAINT "responses_task_id_fkey" FOREIGN KEY ("task_id") REFERENCES "tasks"("task_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "reviews" ADD CONSTRAINT "reviews_task_id_fkey" FOREIGN KEY ("task_id") REFERENCES "tasks"("task_id") ON DELETE CASCADE ON UPDATE CASCADE;

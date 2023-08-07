@@ -6,25 +6,33 @@ import {
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskEntity } from './task.entity';
 import { IResponse, ITask, TaskStatus } from '@project/shared/app-types';
-import { TagRepository } from '../tag/tag.repository';
 import { TaskRepository } from './task.repository';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import { CategoryService } from '../category/category.service';
+import { TagService } from '../tag/tag.service';
+
+const TAGS_MAX_COUNT = 5;
 
 @Injectable()
 export class TaskService {
   constructor(
     private readonly taskRepository: TaskRepository,
-    private readonly tagRepository: TagRepository
+    private readonly tagService: TagService,
+    private readonly categoryService: CategoryService
   ) {}
 
   async create(dto: CreateTaskDto): Promise<ITask> {
-    const tags = await this.tagRepository.find(dto.tags);
+    const category = await this.categoryService.findOrCreate(dto.category);
+    const tagsArray = Array.from(new Set(dto.tags)).slice(0, TAGS_MAX_COUNT);
+    const tags = await this.tagService.findOrCreateMany(tagsArray);
     const taskEntity = new TaskEntity({
       ...dto,
+      categoryId: category.categoryId,
       tags,
       comments: [],
       responses: [],
     });
+
     return this.taskRepository.create(taskEntity);
   }
 

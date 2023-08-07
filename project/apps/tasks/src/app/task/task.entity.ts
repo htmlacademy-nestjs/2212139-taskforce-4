@@ -4,10 +4,11 @@ import {
   IReview,
   ITag,
   IResponse,
-  TaskStatus,
   IEntity,
-  City,
 } from '@project/shared/app-types';
+import dayjs from 'dayjs';
+
+const DEFAULT_DEADLINE_DAY = 3;
 
 export class TaskEntity implements IEntity<TaskEntity>, ITask {
   public taskId: number;
@@ -17,11 +18,10 @@ export class TaskEntity implements IEntity<TaskEntity>, ITask {
   public deadline?: Date;
   public image?: string;
   public address?: string;
-  public city: City;
-  public status: TaskStatus;
+  public city: string;
+  public status: string;
   public comments?: IComment[];
   public responses: IResponse[];
-  public review?: IReview;
   public tags?: ITag[];
   public categoryId: number;
 
@@ -42,13 +42,14 @@ export class TaskEntity implements IEntity<TaskEntity>, ITask {
     this.details = entity.details;
     this.categoryId = entity.categoryId;
     this.price = entity.price;
-    this.deadline = entity.deadline;
+    this.deadline = entity.deadline
+      ? dayjs(entity.deadline).toDate()
+      : dayjs().add(DEFAULT_DEADLINE_DAY, 'day').toDate();
     this.image = entity.image;
     this.address = entity.address;
     this.city = entity.city;
     this.comments = [];
-    this.responses = [...entity.responses];
-    this.review = entity.review;
+    this.responses = [];
     this.tags = [...entity.tags];
     this.status = entity.status;
     this.userId = entity.userId;

@@ -21,8 +21,8 @@ model Task {
   deadline   DateTime? @default(dbgenerated("NOW() + INTERVAL '7 DAYS'"))
   image      String?   @default("")
   address    String?   @default("")
-  city       String    @default('Москва')
-  status     String    @default('New')
+  city       String    @default("Москва")
+  status     String    @default("New")
 
   userId     String? @map("user_id")
   executorId String? @default("") @map("executor_id")
@@ -72,7 +72,7 @@ model Tag {
 model Response {
   responseId Int      @id @default(autoincrement()) @map("response_id")
   offerPrice Int
-  task       Task     @relation(fields: [taskId], references: [taskId])
+  task       Task     @relation(fields: [taskId], references: [taskId], onDelete: Cascade, onUpdate: Cascade)
   taskId     Int      @map("task_id")
   executorId String   @map("executor_id")
   createdAt  DateTime @default(now()) @map("created_at")
@@ -85,6 +85,7 @@ model Review {
   task       Task   @relation(fields: [taskId], references: [taskId], onDelete: Cascade, onUpdate: Cascade)
   taskId     Int    @unique @map("task_id")
   userId     String @map("user_id")
+  executorId String @map("executor_id")
   review     String @default("")
   evaluation Int    @default(0)
 

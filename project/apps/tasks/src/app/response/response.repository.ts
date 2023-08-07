@@ -14,7 +14,7 @@ export class ResponseRepository
     return this.prisma.response.create({
       data: {
         offerPrice: item.offerPrice,
-        userId: item.userId,
+        executorId: item.executorId,
         task: { connect: { taskId: item.taskId } },
       },
     });
@@ -42,9 +42,9 @@ export class ResponseRepository
     });
   }
 
-  public findByUserId(userId: string): Promise<IResponse[]> {
+  public findByUserId(executorId: string): Promise<IResponse[]> {
     return this.prisma.response.findMany({
-      where: { userId },
+      where: { executorId },
     });
   }
 

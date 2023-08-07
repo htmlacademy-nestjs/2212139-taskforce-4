@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsArray,
   IsDate,
-  IsEnum,
   IsNumber,
   IsOptional,
   IsPositive,
@@ -12,7 +11,6 @@ import {
   MinDate,
 } from 'class-validator';
 import { ValidTask } from '../task.constant';
-import { Transform } from 'class-transformer';
 
 export class CreateTaskDto {
   @ApiProperty({
@@ -32,18 +30,18 @@ export class CreateTaskDto {
   public details: string;
 
   @ApiProperty({
-    description: 'Category id',
-    example: '15, 3',
+    description: 'Category',
+    example: 'Доставка',
   })
   @IsString()
-  public categoryId: number;
+  public category: string;
 
   @ApiProperty({
     description: 'Comments id',
     example: '15, 12, 3',
   })
   @IsArray()
-  public comments?: string[];
+  public comments?: number[];
 
   @ApiProperty({
     description: 'Изображение',
@@ -85,7 +83,7 @@ export class CreateTaskDto {
     example: 'доставка быстро аккуратно',
   })
   @IsOptional()
-  public tags?: number[];
+  public tags?: string[];
 
   @ApiProperty({
     description: 'City',

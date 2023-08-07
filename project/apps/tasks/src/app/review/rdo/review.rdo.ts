@@ -6,15 +6,15 @@ export class ReviewRdo {
     description: 'Review id',
     example: '3',
   })
-  @Expose({ name: 'reviewId' })
-  public id: number;
+  @Expose()
+  public reviewId: string;
 
   @ApiProperty({
     description: 'Review evaluation',
     example: '4',
   })
   @Expose()
-  public evaluation: number;
+  public evaluation: string;
 
   @ApiProperty({
     description: 'Task id',
@@ -28,5 +28,5 @@ export class ReviewRdo {
     example: '2023-07-12',
   })
   @Expose()
-  public createdAt: Date;
+  public createdAt: string;
 }

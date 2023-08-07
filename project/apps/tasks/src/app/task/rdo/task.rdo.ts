@@ -9,7 +9,7 @@ export class TaskRdo {
     example: '18',
   })
   @Expose({ name: 'taskId' })
-  public taskId: number;
+  public taskId: string;
 
   @ApiProperty({
     description: 'Task title',
@@ -26,8 +26,8 @@ export class TaskRdo {
   public details: string;
 
   @ApiProperty({
-    description: 'Category',
-    example: 'Доставка',
+    description: 'One of the existing Categories',
+    example: 'Delivery',
   })
   @Expose()
   public category: ICategory;
@@ -44,7 +44,7 @@ export class TaskRdo {
     example: '2023-03-12',
   })
   @Expose()
-  public deadline: Date;
+  public deadline: string;
 
   @ApiProperty({
     description: 'Image',

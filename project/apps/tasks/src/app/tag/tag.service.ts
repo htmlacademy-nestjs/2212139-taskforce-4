@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
+import { TagRepository } from './tag.repository';
 import { CreateTagDto } from './dto/create-tag.dto';
-import { UpdateTagDto } from './dto/update-tag.dto';
+import { TagEntity } from './tag.entity';
+import { ITag } from '@project/shared/app-types';
 
 @Injectable()
-export class TagsService {
-  create(createTagDto: CreateTagDto) {
-    return 'This action adds a new tag';
+export class TagService {
+  constructor(private readonly tagRepository: TagRepository) {}
+
+  async createTag(dto: CreateTagDto): Promise<ITag> {
+    const tagEntity = new TagEntity(dto);
+    return this.tagRepository.create(tagEntity);
   }
 
-  findAll() {
-    return `This action returns all tags`;
+  async deleteTag(id: number): Promise<void> {
+    await this.tagRepository.destroy(id);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tag`;
+  async getTag(id: number): Promise<ITag | null> {
+    return this.tagRepository.findById(id);
   }
 
-  update(id: number, updateTagDto: UpdateTagDto) {
-    return `This action updates a #${id} tag`;
+  async findByName(name: string): Promise<ITag | null> {
+    return this.tagRepository.findByName(name);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tag`;
+  async findOrCreate(name: string): Promise<ITag> {
+    return this.tagRepository.findOrCreate(name);
+  }
+
+  async findOrCreateMany(names: string[]): Promise<ITag[]> {
+    return this.tagRepository.findOrCreateMany(names);
+  }
+
+  async getTags(): Promise<ITag[]> {
+    return this.tagRepository.find();
   }
 }

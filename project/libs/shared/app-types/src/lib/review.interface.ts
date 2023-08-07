@@ -5,4 +5,5 @@ export interface IReview {
   taskId: number;
   userId: string;
   executorId: string;
+  createdAt?: Date;
 }

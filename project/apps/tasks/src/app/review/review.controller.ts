@@ -11,15 +11,12 @@ import {
 import { fillObject } from '@project/util/util-core';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpStatusCode } from 'axios';
-import { CreateCommentDto } from '../comment/dto/create-comment.dto';
-import { UpdateCommentDto } from '../comment/dto/update-comment.dto';
 import { CommentRdo } from '../comment/rdo/comment.rdo';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewRdo } from './rdo/review.rdo';
-import { UpdateReviewDto } from './dto/update-review.dto';
 
-@ApiTags('review')
+@ApiTags('Actions with review')
 @Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
@@ -27,11 +24,12 @@ export class ReviewController {
   @ApiResponse({
     status: HttpStatusCode.Created,
     description: 'The new review has been successfully created.',
+    type: ReviewRdo,
   })
   @HttpCode(HttpStatusCode.Created)
   @Post()
-  public async create(@Body() createReviewDto: CreateReviewDto) {
-    const newReview = await this.reviewService.create(createReviewDto);
+  public async create(@Body() dto: CreateReviewDto) {
+    const newReview = this.reviewService.create(dto);
     return fillObject(ReviewRdo, newReview);
   }
 
@@ -42,7 +40,7 @@ export class ReviewController {
   })
   @Get()
   public async findAll() {
-    const allReviews = await this.reviewService.findAll();
+    const allReviews = this.reviewService.findAll();
     return fillObject(ReviewRdo, allReviews);
   }
 
@@ -53,22 +51,39 @@ export class ReviewController {
   })
   @Get(':id')
   public async findOne(@Param('id') id: string) {
-    const currentReview = await this.reviewService.findOne(+id);
+    const currentReview = this.reviewService.findOne(+id);
     return fillObject(ReviewRdo, currentReview);
   }
 
   @ApiResponse({
     type: ReviewRdo,
     status: HttpStatusCode.Ok,
-    description: 'Update review',
+    description: 'Find review by taskId',
   })
-  @Patch(':id')
-  public async update(
-    @Param('id') id: string,
-    @Body() updateReviewDto: UpdateReviewDto
-  ) {
-    const updatedReview = this.reviewService.update(+id, updateReviewDto);
-    return fillObject(CommentRdo, updatedReview);
+  @Patch('task/:id')
+  public async findByTaskId(@Param('id') taskId: string) {
+    const existsReview = this.reviewService.findByTaskId(+taskId);
+    return fillObject(ReviewRdo, existsReview);
+  }
+
+  @ApiResponse({
+    type: ReviewRdo,
+    status: HttpStatusCode.Ok,
+    description: 'Find reviews by executor Id',
+  })
+  @Patch('executor/:id')
+  public async findByExecurotId(@Param('id') executorId: string) {
+    const existsReview = this.reviewService.findByExecutorId(executorId);
+    return fillObject(ReviewRdo, existsReview);
+  }
+
+  @ApiResponse({
+    status: HttpStatusCode.Ok,
+    description: 'Find rating of executor',
+  })
+  @Patch('rating/:id')
+  public async findRatingByExecurotId(@Param('id') executorId: string) {
+    return this.reviewService.findRating(executorId);
   }
 
   @ApiResponse({
@@ -78,6 +93,6 @@ export class ReviewController {
   @Delete(':id')
   @HttpCode(HttpStatusCode.NoContent)
   public async remove(@Param('id') id: string) {
-    await this.reviewService.remove(+id);
+    this.reviewService.remove(+id);
   }
 }

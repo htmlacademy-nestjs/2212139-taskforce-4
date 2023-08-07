@@ -47,7 +47,6 @@ export class TagRepository implements CRUDRepository<TagEntity, number, ITag> {
 
   public async findOrCreateMany(names: string[]): Promise<ITag[]> {
     const tags = [];
-    console.log(names);
     names.forEach((name) => {
       const tag = this.findOrCreate(name);
       tags.push(tag);
@@ -65,12 +64,12 @@ export class TagRepository implements CRUDRepository<TagEntity, number, ITag> {
     });
   }
 
-  public update(id: number, item: TagEntity): Promise<ITag> {
+  public update(tagId: number, item: TagEntity): Promise<ITag> {
     return this.prisma.tag.update({
       where: {
-        tagId: id,
+        tagId,
       },
-      data: { ...item.toObject(), tagId: id },
+      data: { ...item.toObject(), tagId },
     });
   }
 }
