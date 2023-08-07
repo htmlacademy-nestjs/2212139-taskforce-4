@@ -1,26 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { IResponse, ITask } from '@project/shared/app-types';
+import { ResponseRepository } from './response.repository';
+import { ResponseEntity } from './response.entity';
 import { CreateResponseDto } from './dto/create-response.dto';
-import { UpdateResponseDto } from './dto/update-response.dto';
+import { TaskService } from '../task/task.service';
 
 @Injectable()
 export class ResponseService {
-  create(createResponseDto: CreateResponseDto) {
-    return 'This action adds a new response';
+  constructor(
+    private readonly responseRepository: ResponseRepository,
+    private readonly taskService: TaskService
+  ) {}
+
+  async create(dto: CreateResponseDto): Promise<IResponse> {
+    const responseEntity = new ResponseEntity(dto);
+    return this.responseRepository.create(responseEntity);
   }
 
-  findAll() {
-    return `This action returns all response`;
+  async delete(id: number): Promise<void> {
+    this.responseRepository.destroy(id);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} response`;
+  async findResponsesByTaskId(id: number): Promise<IResponse[]> {
+    return this.responseRepository.findByTaskId(+id);
   }
 
-  update(id: number, updateResponseDto: UpdateResponseDto) {
-    return `This action updates a #${id} response`;
+  async findResponsesByUserId(id: string): Promise<IResponse[]> {
+    return this.responseRepository.findByUserId(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} response`;
+  async acceptResponse(responseId: number): Promise<ITask | null> {
+    const response = await this.responseRepository.findById(responseId);
+    const allTaskResponses = await this.findResponsesByTaskId(response.taskId);
+    if (allTaskResponses.includes(response)) {
+      return await this.taskService.setAcceptedResponse(response);
+    } else {
+      throw new BadRequestException('Response not found');
+    }
   }
 }

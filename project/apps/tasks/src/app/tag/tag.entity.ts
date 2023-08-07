@@ -1,7 +1,6 @@
-import { ITag } from '@project/shared/app-types';
-import { Entity } from '@project/util/util-types';
+import { IEntity, ITag } from '@project/shared/app-types';
 
-export class TagEntity implements Entity<TagEntity>, ITag {
+export class TagEntity implements IEntity<TagEntity>, ITag {
   public tagId: number;
   public name: string;
   public createdAt?: Date;

@@ -1,12 +1,12 @@
-import { IReview } from '@project/shared/app-types';
-import { Entity } from '@project/util/util-types';
+import { IEntity, IReview } from '@project/shared/app-types';
 
-export class ReviewEntity implements Entity<ReviewEntity>, IReview {
+export class ReviewEntity implements IEntity<ReviewEntity>, IReview {
   public reviewId: number;
   public review: string;
   public evaluation: number;
   public taskId: number;
   public userId: string;
+  public executorId: string;
   public createdAt: Date;
 
   constructor(review: IReview) {
@@ -19,6 +19,7 @@ export class ReviewEntity implements Entity<ReviewEntity>, IReview {
     this.evaluation = entity.evaluation;
     this.taskId = entity.taskId;
     this.userId = entity.userId;
+    this.executorId = entity.executorId;
     this.createdAt = new Date();
   }
 

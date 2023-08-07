@@ -1,10 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
-import { TaskRepository } from './task.repositiry';
 import { TaskEntity } from './task.entity';
-import { ITask } from '@project/shared/app-types';
+import { IResponse, ITask, TaskStatus } from '@project/shared/app-types';
 import { TagRepository } from '../tag/tag.repository';
+import { TaskRepository } from './task.repository';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 
 @Injectable()
 export class TaskService {
@@ -24,7 +28,7 @@ export class TaskService {
     return this.taskRepository.create(taskEntity);
   }
 
-  async delete(id: number): Promise<void> {
+  async remove(id: number): Promise<void> {
     this.taskRepository.destroy(id);
   }
 
@@ -36,8 +40,57 @@ export class TaskService {
     return this.taskRepository.find();
   }
 
-  async update(_id: number, _dto: UpdateTaskDto): Promise<ITask> {
-    throw new Error('Not implemented…');
+  async updateTaskStatus(
+    taskId: number,
+    dto: UpdateTaskStatusDto
+  ): Promise<ITask> {
+    const task = await this.taskRepository.findById(taskId);
+    if (!task) throw new NotFoundException('Task not found');
+
+    switch (task.status) {
+      case TaskStatus.New:
+        //TODO: get user in token and compare with task.userId
+        if (
+          dto.userId === task.userId &&
+          (dto.status === TaskStatus.Canceled ||
+            (dto.status === TaskStatus.InWork && task.executorId))
+        ) {
+          return this.taskRepository.updateTaskStatus(taskId, dto.status);
+        }
+        break;
+      case TaskStatus.InWork:
+        //TODO: также проверить user === task.executorId
+        if (
+          dto.status === TaskStatus.Failed ||
+          dto.status === TaskStatus.Done
+        ) {
+          return this.taskRepository.updateTaskStatus(taskId, dto.status);
+        }
+        break;
+    }
+    throw new BadRequestException('Something went wrong');
+  }
+
+  async setAcceptedResponse(
+    acceptedResponse: IResponse
+  ): Promise<ITask | null> {
+    const task = await this.findOne(acceptedResponse.taskId);
+    const price = acceptedResponse.offerPrice ?? task.price;
+    const executorTaskInWork = this.taskRepository.findExecutorInWork(
+      acceptedResponse.executorId
+    );
+
+    if (!task) throw new NotFoundException('Task not found');
+    if (task.executorId)
+      throw new BadRequestException('The executor already exists');
+    if (executorTaskInWork)
+      throw new BadRequestException('The executor already has a job');
+
+    return this.taskRepository.setAcceptedResponse(
+      task.taskId,
+      acceptedResponse.executorId,
+      price
+    );
   }
 
   async incrementCommentsCounter(

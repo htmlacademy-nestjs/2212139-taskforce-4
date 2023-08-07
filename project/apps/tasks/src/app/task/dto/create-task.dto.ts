@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { City, TaskStatus } from '@project/shared/app-types';
 import {
   IsArray,
   IsDate,
@@ -93,12 +92,10 @@ export class CreateTaskDto {
     example: 'Москва',
   })
   @IsString()
-  @IsEnum(City)
-  @Transform(({ value }) => value as City)
-  public city: City;
+  public city: string;
 
   @ApiProperty({
-    description: 'userId',
+    description: 'Id заказчика',
     example: '23938fadakljk3k2kj23jk2j',
   })
   @IsString()
@@ -108,7 +105,6 @@ export class CreateTaskDto {
     description: 'Текущий статус задачи',
     example: 'new',
   })
-  @IsEnum(TaskStatus)
-  @Transform(({ value }) => value as TaskStatus)
-  public status: TaskStatus;
+  @IsString()
+  public status: string;
 }

@@ -1,7 +1,6 @@
-import { ICategory } from '@project/shared/app-types';
-import { Entity } from '@project/util/util-types';
+import { ICategory, IEntity } from '@project/shared/app-types';
 
-export class CategoryEntity implements Entity<CategoryEntity>, ICategory {
+export class CategoryEntity implements IEntity<CategoryEntity>, ICategory {
   public categoryId: number;
   public name: string;
 

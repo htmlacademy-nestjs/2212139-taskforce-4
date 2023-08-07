@@ -7,14 +7,15 @@ import {
   Param,
   Delete,
   HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpStatusCode } from 'axios';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
 import { fillObject } from '@project/util/util-core';
 import { TaskRdo } from './rdo/task.rdo';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 
 @ApiTags('task')
 @Controller('tasks')
@@ -56,12 +57,15 @@ export class TaskController {
 
   @ApiResponse({
     type: TaskRdo,
-    status: HttpStatusCode.Ok,
+    status: HttpStatus.OK,
     description: 'Update task',
   })
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    const updatedTask = await this.taskService.update(+id, updateTaskDto);
+  @Patch('status/:id')
+  async updateTaskStatus(
+    @Param('id') taskId: string,
+    @Body() dto: UpdateTaskStatusDto
+  ) {
+    const updatedTask = await this.taskService.updateTaskStatus(+taskId, dto);
     return fillObject(TaskRdo, updatedTask);
   }
 
@@ -72,6 +76,6 @@ export class TaskController {
   @Delete(':id')
   @HttpCode(HttpStatusCode.NoContent)
   async remove(@Param('id') id: string) {
-    this.taskService.remove(+id);
+    await this.taskService.remove(+id);
   }
 }

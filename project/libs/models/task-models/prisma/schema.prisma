@@ -21,10 +21,11 @@ model Task {
   deadline   DateTime? @default(dbgenerated("NOW() + INTERVAL '7 DAYS'"))
   image      String?   @default("")
   address    String?   @default("")
-  city       String    @default("Москва")
-  status     String    @default("new")
+  city       String    @default('Москва')
+  status     String    @default('New')
 
-  userId String? @map("user_id")
+  userId     String? @map("user_id")
+  executorId String? @default("") @map("executor_id")
 
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
@@ -73,7 +74,7 @@ model Response {
   offerPrice Int
   task       Task     @relation(fields: [taskId], references: [taskId])
   taskId     Int      @map("task_id")
-  userId     String   @map("user_id")
+  executorId String   @map("executor_id")
   createdAt  DateTime @default(now()) @map("created_at")
 
   @@map("responses")
@@ -88,18 +89,4 @@ model Review {
   evaluation Int    @default(0)
 
   @@map("reviews")
-}
-
-enum City {
-  Moscow
-  SPb
-  Vladivostok
-}
-
-enum TaskStatus {
-  New
-  Canceled
-  InWork
-  Done
-  Failed
 }

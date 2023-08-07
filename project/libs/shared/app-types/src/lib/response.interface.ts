@@ -1,6 +1,6 @@
 export interface IResponse {
   responseId?: number;
   taskId: number;
-  userId: string;
+  executorId: string;
   offerPrice?: number;
 }

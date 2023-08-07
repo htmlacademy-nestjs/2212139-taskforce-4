@@ -1,15 +1,15 @@
-import { Entity } from '@project/util/util-types';
 import {
   ITask,
   IComment,
   IReview,
   ITag,
   IResponse,
-  City,
   TaskStatus,
+  IEntity,
+  City,
 } from '@project/shared/app-types';
 
-export class TaskEntity implements Entity<TaskEntity>, ITask {
+export class TaskEntity implements IEntity<TaskEntity>, ITask {
   public taskId: number;
   public title: string;
   public details: string;
@@ -26,6 +26,7 @@ export class TaskEntity implements Entity<TaskEntity>, ITask {
   public categoryId: number;
 
   public userId: string;
+  public executorId: string;
   public createdAt: Date;
   public updatedAt: Date;
   public responsesCount?: number;
@@ -51,6 +52,7 @@ export class TaskEntity implements Entity<TaskEntity>, ITask {
     this.tags = [...entity.tags];
     this.status = entity.status;
     this.userId = entity.userId;
+    this.executorId = entity.executorId;
     this.createdAt = new Date();
     this.updatedAt = new Date();
     this.responsesCount = entity.responsesCount;

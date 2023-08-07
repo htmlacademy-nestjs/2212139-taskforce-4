@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-//import { PrismaClient } from '../../../../node_modules/.prisma/client';
 const prisma = new PrismaClient();
 
 async function fillDb() {
@@ -11,9 +10,9 @@ async function fillDb() {
       details: 'Шкаф новый. Инструкция имеется',
       price: 300,
       address: 'ул. Мебельная д. 21 кв. 10',
-      city: 'Владивосток',
+      city: 'Москва',
       userId: '22',
-      status: 'new',
+      status: 'New',
       category: {
         create: {
           categoryId: 2,
@@ -63,9 +62,9 @@ async function fillDb() {
       details: 'Фильтр осмос Prestige-3M',
       price: 200,
       address: 'ул. Гагарина д. 11 кв. 42',
-      city: 'Москва',
+      city: 'Владивосток',
       userId: '15',
-      status: 'new',
+      status: 'New',
       category: {
         create: {
           categoryId: 1,

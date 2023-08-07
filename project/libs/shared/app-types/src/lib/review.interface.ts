@@ -4,4 +4,5 @@ export interface IReview {
   evaluation: number;
   taskId: number;
   userId: string;
+  executorId: string;
 }
