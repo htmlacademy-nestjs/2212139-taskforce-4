@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class TagRdo {
   @ApiProperty({
-    description: 'Уникальный идентификатор тега',
+    description: 'Уникальный id тега',
     example: '3',
     required: true,
   })

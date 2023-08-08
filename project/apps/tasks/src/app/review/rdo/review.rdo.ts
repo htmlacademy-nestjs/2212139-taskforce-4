@@ -3,28 +3,35 @@ import { Expose } from 'class-transformer';
 
 export class ReviewRdo {
   @ApiProperty({
-    description: 'Review id',
+    description: 'Id отзыва',
     example: '3',
   })
   @Expose()
   public reviewId: string;
 
   @ApiProperty({
-    description: 'Review evaluation',
+    description: 'Оценка за работу',
     example: '4',
   })
   @Expose()
   public evaluation: string;
 
   @ApiProperty({
-    description: 'Task id',
-    example: '13',
+    description: 'Id заказчика',
+    example: '13dkajdfe3',
   })
   @Expose()
   public taskId: string;
 
   @ApiProperty({
-    description: 'Created at',
+    description: 'Id исполнителя',
+    example: '4dkfaldfkac3',
+  })
+  @Expose()
+  public executorId: string;
+
+  @ApiProperty({
+    description: 'Дата создания отзыва',
     example: '2023-07-12',
   })
   @Expose()

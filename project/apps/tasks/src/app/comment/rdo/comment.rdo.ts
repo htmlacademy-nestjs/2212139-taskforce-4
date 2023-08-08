@@ -3,21 +3,21 @@ import { Expose } from 'class-transformer';
 
 export class CommentRdo {
   @ApiProperty({
-    description: 'Comment id',
+    description: 'Id комментария',
     example: '3',
   })
-  @Expose({ name: 'commentId' })
+  @Expose()
   public commentId: string;
 
   @ApiProperty({
-    description: 'Comment text',
+    description: 'Текст комментария. Длинна: мин 10 макс 300 символов',
     example: 'Very good work!',
   })
   @Expose()
   public text: string;
 
   @ApiProperty({
-    description: 'Author of comment',
+    description: 'Id автора комментария',
     example: '13',
   })
   @Expose()
@@ -31,7 +31,7 @@ export class CommentRdo {
   public createdAt: string;
 
   @ApiProperty({
-    description: 'Updated at',
+    description: 'Дата обновления комментария',
     example: '2023-07-13',
   })
   @Expose()

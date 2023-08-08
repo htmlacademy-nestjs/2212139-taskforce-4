@@ -5,63 +5,63 @@ import { Tag } from '@prisma/client';
 
 export class TaskRdo {
   @ApiProperty({
-    description: 'Task id',
+    description: 'Id задания',
     example: '18',
   })
-  @Expose({ name: 'taskId' })
+  @Expose()
   public taskId: string;
 
   @ApiProperty({
-    description: 'Task title',
+    description: 'Заголовок задания',
     example: 'Доставка',
   })
   @Expose()
   public title: string;
 
   @ApiProperty({
-    description: 'Task details',
-    example: 'Details ...',
+    description: 'Дополнительная информация по заданию',
+    example: 'Обязательно светодиодную',
   })
   @Expose()
   public details: string;
 
   @ApiProperty({
-    description: 'One of the existing Categories',
-    example: 'Delivery',
+    description: 'Категория задания',
+    example: 'Электрика',
   })
   @Expose()
   public category: ICategory;
 
   @ApiProperty({
-    description: 'Price',
+    description: 'Цена. Любое положительное число, или ноль.',
     example: '1500',
   })
   @Expose()
   public price: number;
 
   @ApiProperty({
-    description: 'Deadline',
+    description: 'Конечная дата исполнения задания',
     example: '2023-03-12',
   })
   @Expose()
   public deadline: string;
 
   @ApiProperty({
-    description: 'Image',
-    example: 'http://example.com/r646oaer32rfr.jpg',
+    description: 'Пояснительное изображние',
+    example: 'гвоздь.jpg',
   })
   @Expose()
   public image: string;
 
   @ApiProperty({
-    description: 'Address',
+    description: 'Адрес местонахождения задания',
     example: 'Address ...',
   })
   @Expose()
   public address: string;
 
   @ApiProperty({
-    description: 'Tags',
+    description: 'Тэги задания',
     example: 'доставка быстро аккуратно',
   })
   @Expose()
@@ -69,49 +69,49 @@ export class TaskRdo {
   public tags: Tag[];
 
   @ApiProperty({
-    description: 'City',
+    description: 'Город, в котором создано задание',
     example: 'Москва',
   })
   @Expose()
   public city: string;
 
   @ApiProperty({
-    description: 'Created at',
+    description: 'Дата создания задания',
     example: '2023-03-12',
   })
   @Expose()
   public createdAt: Date;
 
   @ApiProperty({
-    description: 'Updated at',
+    description: 'Дата обновления задания',
     example: '2023-03-12',
   })
   @Expose()
   public updatedAt: Date;
 
   @ApiProperty({
-    description: 'Status task',
-    example: 'new',
+    description: 'Текущий статус задачи',
+    example: 'New',
   })
   @Expose()
   public status: string;
 
   @ApiProperty({
     description: 'Количество откликов.',
-    example: '',
+    example: '3',
   })
   @Expose()
   public responsesCont: number;
 
   @ApiProperty({
     description: 'Количество комментариев.',
-    example: '',
+    example: '33',
   })
   @Expose()
   public commentsCount: number;
 
   @ApiProperty({
-    description: 'userId',
+    description: 'Id заказчика',
     example: '383j3j3jh3432kjjhkjgdf',
   })
   @Expose()

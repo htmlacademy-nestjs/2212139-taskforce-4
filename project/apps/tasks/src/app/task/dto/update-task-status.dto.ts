@@ -9,14 +9,14 @@ export class UpdateTaskStatusDto {
   public status: TaskStatus;
 
   @ApiProperty({
-    description: 'Уникальный идентификатор заказчика.',
-    example: '123456',
+    description: 'Уникальный id заказчика.',
+    example: '123aldfaldfa456',
   })
   public userId: string;
 
   @ApiProperty({
-    description: 'Уникальный идентификатор исполнителя.',
-    example: '123456',
+    description: 'Уникальный id исполнителя.',
+    example: '1dsf3sdk4sdf5di6',
   })
   public executorId: string;
 }

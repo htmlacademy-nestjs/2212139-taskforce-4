@@ -14,44 +14,44 @@ import { ValidTask } from '../task.constant';
 
 export class CreateTaskDto {
   @ApiProperty({
-    description: 'Task title',
-    example: 'Доставка',
+    description: 'Заголовок задания',
+    example: 'Поменять лампочку',
   })
   @IsString()
   @Length(ValidTask.MinTitleLength, ValidTask.MaxTitleLength)
   public title: string;
 
   @ApiProperty({
-    description: 'Task details',
-    example: 'Details ...',
+    description: 'Дополнительная информация по заданию',
+    example: 'Обязательно светодиодную',
   })
   @IsString()
   @Length(ValidTask.MinDetailsLength, ValidTask.MaxDetailsLength)
   public details: string;
 
   @ApiProperty({
-    description: 'Category',
-    example: 'Доставка',
+    description: 'Категория задания',
+    example: 'Электрика',
   })
   @IsString()
   public category: string;
 
   @ApiProperty({
-    description: 'Comments id',
+    description: 'Id комментариев',
     example: '15, 12, 3',
   })
   @IsArray()
   public comments?: number[];
 
   @ApiProperty({
-    description: 'Изображение',
+    description: 'Пояснительное изображние',
     example: 'гвоздь.jpg',
   })
   @IsOptional()
   public image?: string;
 
   @ApiProperty({
-    description: 'Price',
+    description: 'Цена. Любое положительное число, или ноль.',
     example: '1500',
   })
   @IsNumber()
@@ -61,7 +61,7 @@ export class CreateTaskDto {
   public price?: number;
 
   @ApiProperty({
-    description: 'Deadline',
+    description: 'Конечная дата исполнения задания',
     example: '2023-03-12',
   })
   @IsDate()
@@ -70,7 +70,7 @@ export class CreateTaskDto {
   public deadline?: Date;
 
   @ApiProperty({
-    description: 'Workplace address',
+    description: 'Адрес местонахождения задания',
     example: 'Address ...',
   })
   @IsString()
@@ -79,14 +79,14 @@ export class CreateTaskDto {
   public address?: string;
 
   @ApiProperty({
-    description: 'Tags',
+    description: 'Тэги задания',
     example: 'доставка быстро аккуратно',
   })
   @IsOptional()
   public tags?: string[];
 
   @ApiProperty({
-    description: 'City',
+    description: 'Город, в котором создано задание',
     example: 'Москва',
   })
   @IsString()
@@ -101,7 +101,7 @@ export class CreateTaskDto {
 
   @ApiProperty({
     description: 'Текущий статус задачи',
-    example: 'new',
+    example: 'New',
   })
   @IsString()
   public status: string;

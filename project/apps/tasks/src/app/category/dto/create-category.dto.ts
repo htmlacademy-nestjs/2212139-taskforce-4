@@ -3,8 +3,8 @@ import { IsString } from 'class-validator';
 
 export class CreateCategoryDto {
   @ApiProperty({
-    description: 'Category name',
-    example: 'Delivery',
+    description: 'Новое или существующее имя категории',
+    example: 'Доставка',
     required: true,
   })
   @IsString()

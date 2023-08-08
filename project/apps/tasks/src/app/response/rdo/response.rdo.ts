@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class ResponseRdo {
   @ApiProperty({
-    description: 'Уникальный идентификатор отклика',
+    description: 'Уникальный id отклика',
     example: '1',
     required: true,
   })
@@ -11,7 +11,7 @@ export class ResponseRdo {
   public responseId: string;
 
   @ApiProperty({
-    description: 'Уникальный идентификатор задания',
+    description: 'Уникальный id задания',
     example: '2',
     required: true,
   })
@@ -19,7 +19,7 @@ export class ResponseRdo {
   public taskId: string;
 
   @ApiProperty({
-    description: 'Уникальный идентификатор исполнителя',
+    description: 'Уникальный id исполнителя',
     example: '2',
     required: true,
   })

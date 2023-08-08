@@ -6,8 +6,8 @@ const MAX_NAME_LENGTH = 10;
 
 export class CreateTagDto {
   @ApiProperty({
-    description: 'Tag task',
-    example: 'delivery',
+    description: 'Имя тега задания. Мин. длинна 3, макс 10',
+    example: 'Доставка',
   })
   @IsString()
   @Length(MIN_NAME_LENGTH, MAX_NAME_LENGTH)

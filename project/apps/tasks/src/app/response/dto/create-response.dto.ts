@@ -2,14 +2,14 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateResponseDto {
   @ApiProperty({
-    description: 'Уникальный идентификатор исполнителя.',
+    description: 'Уникальный id исполнителя.',
     example: '123456',
     required: true,
   })
   public executorId: string;
 
   @ApiProperty({
-    description: 'Идентификатор задания',
+    description: 'Id задания',
     example: '2',
     required: true,
   })

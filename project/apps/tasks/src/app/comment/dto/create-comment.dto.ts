@@ -7,7 +7,7 @@ const MAX_COMMENT_TEXT_LENGTH = 300;
 
 export class CreateCommentDto {
   @ApiProperty({
-    description: 'Comment text',
+    description: 'Текст комментария, минимально 10 символов, максимально 300',
     example: 'Very good work!',
     required: true,
   })
@@ -25,7 +25,7 @@ export class CreateCommentDto {
   public taskId: number;
 
   @ApiProperty({
-    description: 'Author of comment',
+    description: 'Id автора комментария',
     example: '13',
     required: true,
   })

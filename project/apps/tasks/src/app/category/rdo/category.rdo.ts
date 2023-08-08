@@ -3,7 +3,7 @@ import { Expose } from 'class-transformer';
 
 export class CategoryRdo {
   @ApiProperty({
-    description: 'Category id',
+    description: 'Id категории',
     example: '3',
     required: true,
   })
@@ -11,7 +11,7 @@ export class CategoryRdo {
   public categoryId: string;
 
   @ApiProperty({
-    description: 'Category name',
+    description: 'Имя категории',
     example: 'Delivery',
     required: true,
   })

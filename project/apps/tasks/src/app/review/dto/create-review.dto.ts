@@ -8,7 +8,7 @@ const MAX_EVALUATION = 5;
 
 export class CreateReviewDto {
   @ApiProperty({
-    description: 'Review task',
+    description: 'Содержание отзыва',
     example: 'Good job',
   })
   @IsString()
@@ -16,7 +16,7 @@ export class CreateReviewDto {
   public review: string;
 
   @ApiProperty({
-    description: 'Evaluation',
+    description: 'Оценка за работу',
     example: '4',
   })
   @IsNumber()
@@ -25,23 +25,23 @@ export class CreateReviewDto {
   public evaluation: number;
 
   @ApiProperty({
-    description: 'Task id',
+    description: 'Id задания',
     example: '4',
   })
-  @IsNumber()
-  public taskId: number;
+  @IsString()
+  public taskId: string;
 
   @ApiProperty({
-    description: 'User id',
-    example: '4',
+    description: 'Id заказчика',
+    example: 'dlkfjaldkds4',
   })
-  @IsNumber()
+  @IsString()
   public userId: string;
 
   @ApiProperty({
     description: 'Id исполнителя',
-    example: '4',
+    example: '4dkfaldfkac3',
   })
-  @IsNumber()
+  @IsString()
   public executorId: string;
 }
