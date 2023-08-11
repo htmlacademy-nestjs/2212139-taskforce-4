@@ -36,8 +36,8 @@ export class CommentController {
     description: 'Find all comments by TaskId',
   })
   @Get(':id')
-  async findTaskComments(@Param('id') id: string) {
-    const currentComment = await this.commentService.findCommentsByTaskId(+id);
+  async findTaskComments(@Param('id') id: number) {
+    const currentComment = await this.commentService.findCommentsByTaskId(id);
     return fillObject(CommentRdo, currentComment);
   }
 
@@ -47,7 +47,7 @@ export class CommentController {
   })
   @Delete(':id')
   @HttpCode(HttpStatusCode.NoContent)
-  async remove(@Param('id') id: string) {
-    this.commentService.remove(+id);
+  async remove(@Param('id') id: number) {
+    this.commentService.remove(id);
   }
 }

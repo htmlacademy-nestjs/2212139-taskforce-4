@@ -92,7 +92,7 @@ export class ReviewController {
   })
   @Delete(':id')
   @HttpCode(HttpStatusCode.NoContent)
-  public async remove(@Param('id') id: string) {
-    this.reviewService.remove(+id);
+  public async remove(@Param('id') id: number) {
+    this.reviewService.remove(id);
   }
 }

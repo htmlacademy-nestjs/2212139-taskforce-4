@@ -50,8 +50,8 @@ export class TaskController {
     description: 'Find comment by id',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const task = await this.taskService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    const task = await this.taskService.findOne(id);
     return fillObject(TaskRdo, task);
   }
 
@@ -62,10 +62,10 @@ export class TaskController {
   })
   @Patch('status/:id')
   async updateTaskStatus(
-    @Param('id') taskId: string,
+    @Param('id') taskId: number,
     @Body() dto: UpdateTaskStatusDto
   ) {
-    const updatedTask = await this.taskService.updateTaskStatus(+taskId, dto);
+    const updatedTask = await this.taskService.updateTaskStatus(taskId, dto);
     return fillObject(TaskRdo, updatedTask);
   }
 
@@ -75,7 +75,7 @@ export class TaskController {
   })
   @Delete(':id')
   @HttpCode(HttpStatusCode.NoContent)
-  async remove(@Param('id') id: string) {
-    await this.taskService.remove(+id);
+  async remove(@Param('id') id: number) {
+    await this.taskService.remove(id);
   }
 }

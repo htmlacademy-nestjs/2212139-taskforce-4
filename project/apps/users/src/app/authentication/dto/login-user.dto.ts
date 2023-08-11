@@ -7,8 +7,9 @@ import {
 
 export class LoginUserDto {
   @ApiProperty({
-    description: 'User email',
+    description: 'User unique email',
     example: 'user@user.ru',
+    required: true,
   })
   @IsEmail({}, { message: AUTH_USER_EMAIL_NOT_VALID })
   public email: string;

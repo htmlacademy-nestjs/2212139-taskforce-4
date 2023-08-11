@@ -49,8 +49,8 @@ export class CategoryController {
     description: 'Find category by id',
   })
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const category = await this.categoryService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    const category = await this.categoryService.findOne(id);
     return fillObject(CategoryRdo, category);
   }
 
@@ -60,8 +60,8 @@ export class CategoryController {
     description: 'Update category',
   })
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateCategoryDto) {
-    const updatedCategory = await this.categoryService.update(+id, dto);
+  async update(@Param('id') id: number, @Body() dto: UpdateCategoryDto) {
+    const updatedCategory = await this.categoryService.update(id, dto);
     return fillObject(CategoryRdo, updatedCategory);
   }
 
@@ -71,7 +71,7 @@ export class CategoryController {
   })
   @Delete(':id')
   @HttpCode(HttpStatusCode.NoContent)
-  async remove(@Param('id') id: string) {
-    this.categoryService.delete(+id);
+  async remove(@Param('id') id: number) {
+    this.categoryService.delete(id);
   }
 }

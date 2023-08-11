@@ -11,6 +11,7 @@ export class CreateUserDto {
   @ApiProperty({
     description: 'User unique address',
     example: 'user@user.ru',
+    required: true,
   })
   @IsEmail({}, { message: AUTH_USER_EMAIL_NOT_VALID })
   public email: string;
@@ -33,6 +34,7 @@ export class CreateUserDto {
   @ApiProperty({
     description: 'About user',
     example: 'Gamer',
+    required: false,
   })
   @IsString()
   public about?: string;
@@ -40,6 +42,7 @@ export class CreateUserDto {
   @ApiProperty({
     description: 'User password',
     example: '123456',
+    required: true,
   })
   @IsString()
   @Length(

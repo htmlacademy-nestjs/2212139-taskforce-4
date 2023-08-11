@@ -5,17 +5,17 @@ const DEFAULT_PORT = 3334;
 const DEFAULT_MONGO_PORT = 27017;
 
 export interface UploaderConfig {
-  serveRoot: string;
-  environment: string;
-  uploadDirectory: string;
+  serveRoot?: string;
+  environment?: string;
+  uploadDirectory?: string;
   port: number;
   db: {
-    host: string;
+    host?: string;
     port: number;
-    user: string;
-    name: string;
-    password: string;
-    authBase: string;
+    user?: string;
+    name?: string;
+    password?: string;
+    authBase?: string;
   };
 }
 

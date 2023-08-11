@@ -27,10 +27,8 @@ export class ResponseController {
     type: [ResponseRdo],
   })
   @Get('/:taskId')
-  public async findTaskResponses(@Param('taskId') id: string) {
-    const existResponses = await this.responseService.findResponsesByTaskId(
-      +id
-    );
+  public async findTaskResponses(@Param('taskId') id: number) {
+    const existResponses = await this.responseService.findResponsesByTaskId(id);
     return fillObject(ResponseRdo, existResponses);
   }
 
@@ -51,8 +49,8 @@ export class ResponseController {
     type: ResponseRdo,
   })
   @Post('/accept/:id')
-  async acceptResponse(@Param('id') id: string) {
-    const acceptedResponse = await this.responseService.acceptResponse(+id);
+  async acceptResponse(@Param('id') id: number) {
+    const acceptedResponse = await this.responseService.acceptResponse(id);
     return fillObject(ResponseRdo, acceptedResponse);
   }
 }
