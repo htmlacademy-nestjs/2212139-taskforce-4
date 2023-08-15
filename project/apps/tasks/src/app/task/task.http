@@ -59,7 +59,3 @@ GET http://localhost:3333/api/tasks?sortDirection=desc&categories=1&limit=2&page
 
 ###
 
-# Mailing request
-GET http://localhost:3333/api/tasks/notify HTTP/1.1
-
-###

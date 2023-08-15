@@ -10,6 +10,7 @@ import { TaskRepository } from './task.repository';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { CategoryService } from '../category/category.service';
 import { TagService } from '../tag/tag.service';
+import { TaskQuery } from './task.query';
 
 const TAGS_MAX_COUNT = 5;
 
@@ -44,8 +45,8 @@ export class TaskService {
     return this.taskRepository.findById(id);
   }
 
-  async findAll(): Promise<ITask[]> {
-    return this.taskRepository.find();
+  async findAll(query: TaskQuery): Promise<ITask[]> {
+    return this.taskRepository.find(query);
   }
 
   async updateTaskStatus(

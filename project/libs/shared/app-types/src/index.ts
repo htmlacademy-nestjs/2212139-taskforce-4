@@ -12,3 +12,4 @@ export * from './lib/review.interface';
 export * from './lib/entity.interface';
 export * from './lib/response.interface';
 export * from './lib/file.interface';
+export * from './lib/sort-type.enum';

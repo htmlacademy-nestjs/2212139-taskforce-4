@@ -3,12 +3,17 @@ import { CRUDRepository } from '@project/util/util-types';
 import { PrismaService } from '../prisma/prisma.service';
 import { TaskEntity } from './task.entity';
 import { ITask, TaskStatus } from '@project/shared/app-types';
+import { TaskQuery } from './task.query';
+import { TagService } from '../tag/tag.service';
 
 @Injectable()
 export class TaskRepository
   implements CRUDRepository<TaskEntity, number, ITask>
 {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly tagService: TagService
+  ) {}
 
   update(_id: number, _item: TaskEntity): Promise<ITask> {
     throw new Error('Method not implemented.');
@@ -58,13 +63,39 @@ export class TaskRepository
     });
   }
 
-  public async find(): Promise<ITask[]> {
+  public async find(query?: TaskQuery): Promise<ITask[]> {
+    const {
+      limit,
+      sortDirection,
+      sortType,
+      page,
+      city,
+      categoryId,
+      status,
+      tag,
+      userId,
+      executorId,
+    } = query;
+    const existingTag = await this.tagService.findByName(tag);
+
     return await this.prisma.task.findMany({
+      where: {
+        status,
+        city,
+        userId,
+        executorId,
+        categoryId,
+        tags: { ...(existingTag ? { some: { name: existingTag.name } } : {}) },
+      },
       include: {
+        category: true,
         comments: true,
         tags: true,
         responses: true,
       },
+      orderBy: [{ [sortType]: sortDirection }],
+      take: limit,
+      skip: page > 0 ? limit * (page - 1) : undefined,
     });
   }
 

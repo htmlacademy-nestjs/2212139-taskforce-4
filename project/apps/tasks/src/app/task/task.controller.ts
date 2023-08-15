@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -16,6 +17,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { fillObject } from '@project/util/util-core';
 import { TaskRdo } from './rdo/task.rdo';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import { TaskQuery, TaskQuery } from './task.query';
 
 @ApiTags('task')
 @Controller('tasks')
@@ -39,8 +41,8 @@ export class TaskController {
     description: 'All tasks query',
   })
   @Get()
-  async findAll() {
-    const taskAll = await this.taskService.findAll();
+  async findAll(@Query() query: TaskQuery) {
+    const taskAll = await this.taskService.findAll(query);
     return fillObject(TaskRdo, taskAll);
   }
 
