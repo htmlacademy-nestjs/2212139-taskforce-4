@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,6 +18,10 @@ import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { MongoidValidationPipe } from '@project/shared/shared-pipes';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { UpdateBlogUserDto } from '../blog-user/dto/update-blog-user.dto';
+import { CustomerBlogUserRdo } from '../blog-user/rdo/customer-blog-user.rdo';
+import { UserRole } from '@project/shared/app-types';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -46,7 +51,8 @@ export class AuthenticationController {
   @HttpCode(HttpStatus.OK)
   public async login(@Body() dto: LoginUserDto) {
     const verifiedUser = await this.authService.verifyUser(dto);
-    return fillObject(LoggedUserRdo, verifiedUser);
+    const loggedUser = await this.authService.createUserToken(verifiedUser);
+    return fillObject(LoggedUserRdo, Object.assign(verifiedUser, loggedUser));
   }
 
   @ApiResponse({
@@ -54,10 +60,30 @@ export class AuthenticationController {
     status: HttpStatus.OK,
     description: 'User found.',
   })
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   public async show(@Param('id', MongoidValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
     return fillObject(UserRdo, existUser);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User has been successfully updated.',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  async update(
+    @Param('id', MongoidValidationPipe) id: string,
+    @Body() dto: UpdateBlogUserDto
+  ) {
+    const updatedUser = await this.authService.update(id, dto);
+    if (updatedUser.role === UserRole.Customer) {
+      return fillObject(CustomerBlogUserRdo, updatedUser);
+    } else if (updatedUser.role === UserRole.Executor) {
+      return fillObject(CustomerBlogUserRdo, updatedUser);
+    }
   }
 
   @ApiResponse({

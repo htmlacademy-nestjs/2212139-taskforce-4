@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserRole } from '@project/shared/app-types';
+import { IUser, TokenPayload, UserRole } from '@project/shared/app-types';
 import dayjs from 'dayjs';
 import {
   AUTH_USER_EXISTS,
@@ -16,10 +16,15 @@ import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { BlogUserRepository } from '../blog-user/blog-user.repository';
+import { JwtService } from '@nestjs/jwt';
+import { UpdateBlogUserDto } from '../blog-user/dto/update-blog-user.dto';
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private readonly blogUserRepository: BlogUserRepository) {}
+  constructor(
+    private readonly blogUserRepository: BlogUserRepository,
+    private readonly jwtService: JwtService
+  ) {}
 
   public async register(dto: CreateUserDto) {
     const { email, dateBirth, name, city, about, role, password, avatar } = dto;
@@ -91,5 +96,29 @@ export class AuthenticationService {
       newPassword
     );
     return this.blogUserRepository.update(userEntity.id, userEntity);
+  }
+
+  public async createUserToken(user: IUser) {
+    const payload: TokenPayload = {
+      sub: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+
+    return {
+      accessToken: await this.jwtService.signAsync(payload),
+    };
+  }
+
+  async update(id: string, dto: UpdateBlogUserDto) {
+    const existUser = await this.blogUserRepository.findById(id);
+
+    if (!existUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    const userEntity = new BlogUserEntity({ ...existUser, ...dto });
+    return await this.blogUserRepository.update(id, userEntity);
   }
 }

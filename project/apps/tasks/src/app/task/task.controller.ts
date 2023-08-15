@@ -17,7 +17,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { fillObject } from '@project/util/util-core';
 import { TaskRdo } from './rdo/task.rdo';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
-import { TaskQuery, TaskQuery } from './task.query';
+import { TaskQuery } from './task.query';
 
 @ApiTags('task')
 @Controller('tasks')
