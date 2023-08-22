@@ -14,3 +14,5 @@ export * from './lib/response.interface';
 export * from './lib/file.interface';
 export * from './lib/sort-type.enum';
 export * from './lib/token-payload.interface';
+export * from './lib/subscriber.interface';
+export * from './lib/rabbit-routing.enum';
