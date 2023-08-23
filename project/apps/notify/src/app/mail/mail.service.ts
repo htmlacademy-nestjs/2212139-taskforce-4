@@ -1,6 +1,9 @@
 import { ISubscriber } from '@project/shared/app-types';
 import { Inject, Injectable } from '@nestjs/common';
-import { EMAIL_ADD_SUBSCRIBER_SUBJECT } from './mail.constant';
+import {
+  EMAIL_ADD_SUBSCRIBER_SUBJECT,
+  EMAIL_ADD_TASK_SUBJECT,
+} from './mail.constant';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigType } from '@nestjs/config';
 import { notifyConfig } from '@project/config/config-notify';
@@ -25,5 +28,18 @@ export class MailService {
         email: `${subscriber.email}`,
       },
     });
+  }
+
+  public async sendNotifyAllSubscribers(subscribers: ISubscriber[]) {
+    for (const subscriber of subscribers) {
+      await this.mailerService.sendMail({
+        to: subscriber.email,
+        subject: EMAIL_ADD_TASK_SUBJECT,
+        template: './add-task',
+        context: {
+          user: `${subscriber.name}`,
+        },
+      });
+    }
   }
 }

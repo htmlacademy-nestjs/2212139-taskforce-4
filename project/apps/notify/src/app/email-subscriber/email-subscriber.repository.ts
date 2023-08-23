@@ -1,6 +1,6 @@
 import { CRUDRepository } from '@project/util/util-types';
 import { EmailSubscriberEntity } from './email-subscriber.entity';
-import { Subscriber } from '@project/shared/app-types';
+import { ISubscriber, UserRole } from '@project/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { EmailSubscriberModel } from './email-subscriber.model';
@@ -8,14 +8,14 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class EmailSubscriberRepository
-  implements CRUDRepository<EmailSubscriberEntity, string, Subscriber>
+  implements CRUDRepository<EmailSubscriberEntity, string, ISubscriber>
 {
   constructor(
     @InjectModel(EmailSubscriberModel.name)
     private readonly emailSubscriberModel: Model<EmailSubscriberModel>
   ) {}
 
-  public async create(item: EmailSubscriberEntity): Promise<Subscriber> {
+  public async create(item: EmailSubscriberEntity): Promise<ISubscriber> {
     const newEmailSubscriber = new this.emailSubscriberModel(item);
     return newEmailSubscriber.save();
   }
@@ -24,20 +24,24 @@ export class EmailSubscriberRepository
     this.emailSubscriberModel.deleteOne({ _id: id });
   }
 
-  public async findById(id: string): Promise<Subscriber | null> {
+  public async findById(id: string): Promise<ISubscriber | null> {
     return this.emailSubscriberModel.findOne({ _id: id }).exec();
   }
 
   public async update(
     id: string,
     item: EmailSubscriberEntity
-  ): Promise<Subscriber> {
+  ): Promise<ISubscriber> {
     return this.emailSubscriberModel
       .findByIdAndUpdate(id, item.toObject(), { new: true })
       .exec();
   }
 
-  public async findByEmail(email: string): Promise<Subscriber | null> {
+  public async findByEmail(email: string): Promise<ISubscriber | null> {
     return this.emailSubscriberModel.findOne({ email }).exec();
+  }
+
+  public async findByRole(userRole: UserRole): Promise<ISubscriber[]> {
+    return this.emailSubscriberModel.find({ role: userRole }).exec();
   }
 }
