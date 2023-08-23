@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { IUser, TokenPayload, UserRole } from '@project/shared/app-types';
+import { IUser, ITokenPayload, UserRole } from '@project/shared/app-types';
 import dayjs from 'dayjs';
 import {
   AUTH_USER_EXISTS,
@@ -99,7 +99,7 @@ export class AuthenticationService {
   }
 
   public async createUserToken(user: IUser) {
-    const payload: TokenPayload = {
+    const payload: ITokenPayload = {
       sub: user.id,
       name: user.name,
       email: user.email,
