@@ -5,7 +5,7 @@ import {
   AUTH_USER_DATE_BIRTH_NOT_VALID,
   AUTH_USER_EMAIL_NOT_VALID,
   ValidateCondition,
-} from '../authentication.constant';
+} from '../user.constant';
 
 export class CreateUserDto {
   @ApiProperty({

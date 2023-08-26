@@ -7,13 +7,13 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRdo } from './rdo/user.rdo';
 import { fillObject } from '@project/util/util-core';
-import { LoginUserDto } from './dto/login-user.dto';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -21,8 +21,10 @@ import { MongoidValidationPipe } from '@project/shared/shared-pipes';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { UpdateBlogUserDto } from '../blog-user/dto/update-blog-user.dto';
 import { CustomerBlogUserRdo } from '../blog-user/rdo/customer-blog-user.rdo';
-import { UserRole } from '@project/shared/app-types';
+import { RequestWithUser, UserRole } from '@project/shared/app-types';
 import { NotifyService } from '../notify/notify.service';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -44,6 +46,7 @@ export class AuthenticationController {
     return fillObject(UserRdo, newUser);
   }
 
+  @UseGuards(LocalAuthGuard)
   @ApiResponse({
     type: LoggedUserRdo,
     status: HttpStatus.OK,
@@ -55,10 +58,8 @@ export class AuthenticationController {
   })
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  public async login(@Body() dto: LoginUserDto) {
-    const verifiedUser = await this.authService.verifyUser(dto);
-    const loggedUser = await this.authService.createUserToken(verifiedUser);
-    return fillObject(LoggedUserRdo, Object.assign(verifiedUser, loggedUser));
+  public async login(@Req() { user }: RequestWithUser) {
+    return this.authService.createUserToken(user);
   }
 
   @ApiResponse({
@@ -106,5 +107,16 @@ export class AuthenticationController {
   public async changePassword(@Body() dto: ChangePasswordDto) {
     const userEntity = await this.authService.changePassword(dto);
     return fillObject(LoggedUserRdo, userEntity);
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get a new access/refresh tokens',
+  })
+  public async refreshToken(@Req() { user }: RequestWithUser) {
+    return this.authService.createUserToken(user);
   }
 }
