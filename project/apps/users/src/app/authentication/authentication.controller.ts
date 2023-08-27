@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserRdo } from './rdo/user.rdo';
 import { fillObject } from '@project/util/util-core';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -29,6 +28,10 @@ import {
 import { NotifyService } from '../notify/notify.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { ExecuterBlogUserRdo } from '../blog-user/rdo/executer-blog-user.rdo';
+import { CustomerUserRdo } from './rdo/customer-user.rdo';
+import { ExecutorUserRdo } from './rdo/executor-user.rdo';
+import { UserRdo } from './rdo/user.rdo';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -45,9 +48,14 @@ export class AuthenticationController {
   @Post('register')
   public async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
-    const { email, name } = newUser;
+    const { email, name, role } = newUser;
     await this.notifyService.registerSubscriber({ email, name });
-    return fillObject(UserRdo, newUser);
+
+    if (role === UserRole.Customer) {
+      return fillObject(CustomerUserRdo, newUser);
+    } else if (role === UserRole.Executor) {
+      return fillObject(ExecutorUserRdo, newUser);
+    }
   }
 
   @UseGuards(LocalAuthGuard)
@@ -75,7 +83,12 @@ export class AuthenticationController {
   @Get(':id')
   public async show(@Param('id', MongoidValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
-    return fillObject(UserRdo, existUser);
+
+    if (existUser.role === UserRole.Customer) {
+      return fillObject(CustomerUserRdo, existUser);
+    } else if (existUser.role === UserRole.Executor) {
+      return fillObject(ExecutorUserRdo, existUser);
+    }
   }
 
   @HttpCode(HttpStatus.OK)
@@ -93,7 +106,7 @@ export class AuthenticationController {
     if (updatedUser.role === UserRole.Customer) {
       return fillObject(CustomerBlogUserRdo, updatedUser);
     } else if (updatedUser.role === UserRole.Executor) {
-      return fillObject(CustomerBlogUserRdo, updatedUser);
+      return fillObject(ExecuterBlogUserRdo, updatedUser);
     }
   }
 
@@ -106,9 +119,12 @@ export class AuthenticationController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Password or Login is wrong.',
   })
+  @UseGuards(JwtAuthGuard)
   @Patch('change')
   @HttpCode(HttpStatus.OK)
   public async changePassword(@Body() dto: ChangePasswordDto) {
+    console.log(dto);
+
     const userEntity = await this.authService.changePassword(dto);
     return fillObject(LoggedUserRdo, userEntity);
   }

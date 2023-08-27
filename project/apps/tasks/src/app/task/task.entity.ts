@@ -1,7 +1,6 @@
 import {
   ITask,
   IComment,
-  IReview,
   ITag,
   IResponse,
   IEntity,
@@ -25,7 +24,7 @@ export class TaskEntity implements IEntity<TaskEntity>, ITask {
   public tags?: ITag[];
   public categoryId: number;
 
-  public userId: string;
+  public customerId: string;
   public executorId: string;
   public createdAt: Date;
   public updatedAt: Date;
@@ -52,7 +51,7 @@ export class TaskEntity implements IEntity<TaskEntity>, ITask {
     this.responses = [];
     this.tags = [...entity.tags];
     this.status = entity.status ? entity.status : 'new';
-    this.userId = entity.userId;
+    this.customerId = entity.customerId;
     this.executorId = entity.executorId;
     this.createdAt = new Date();
     this.updatedAt = new Date();

@@ -3,7 +3,7 @@ export interface IReview {
   review: string;
   evaluation: number;
   taskId: number;
-  userId: string;
+  customerId: string;
   executorId: string;
   createdAt?: Date;
 }

@@ -60,7 +60,7 @@ export class TaskService {
       case TaskStatus.New:
         //TODO: get user in token and compare with task.userId
         if (
-          dto.userId === task.userId &&
+          dto.customerId === task.customerId &&
           (dto.status === TaskStatus.Canceled ||
             (dto.status === TaskStatus.InWork && task.executorId))
         ) {

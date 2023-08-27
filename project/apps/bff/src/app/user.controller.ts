@@ -27,10 +27,10 @@ export class UserController {
   constructor(private readonly httpService: HttpService) {}
 
   @Post('register')
-  public async create(@Body() createUserDto: CreateUserDto) {
+  public async create(@Body() dto: CreateUserDto) {
     const { data } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Users}/register`,
-      createUserDto
+      dto
     );
     return data;
   }

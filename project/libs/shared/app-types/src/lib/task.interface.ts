@@ -14,7 +14,7 @@ export interface ITask {
   address?: string;
   city: string;
   status: string;
-  userId: string;
+  customerId: string;
   executorId?: string;
   createdAt?: Date;
   updatedAt?: Date;

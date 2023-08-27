@@ -1,7 +1,7 @@
 ###
 
 # Create a new task
-POST http://localhost:3333/api/tasks HTTP/1.1
+POST http://localhost:3100/api/tasks HTTP/1.1
 Content-Type: application/json
 
 {
@@ -12,7 +12,7 @@ Content-Type: application/json
   "deadline":"2023-04-21T08:03:54.941Z",
   "city": "Москва",
   "customerId": "22",
-  "executerId": "115",
+  "executorId": "115",
   "categoryId": 1,
   "tags": "доступно доставка"
 }
@@ -20,22 +20,22 @@ Content-Type: application/json
 ###
 
 # Delete task by id
-DELETE http://localhost:3333/api/tasks/3 HTTP/1.1
+DELETE http://localhost:3100/api/tasks/3 HTTP/1.1
 
 ###
 
 # Get task by id
-GET http://localhost:3333/api/tasks/3 HTTP/1.1
+GET http://localhost:3100/api/tasks/3 HTTP/1.1
 
 ###
 
 # Get all tasks
-GET http://localhost:3333/api/tasks HTTP/1.1
+GET http://localhost:3100/api/tasks HTTP/1.1
 
 ###
 
 # Update the task by id
-PATCH http://localhost:3333/api/tasks/2 HTTP/1.1
+PATCH http://localhost:3100/api/tasks/2 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -55,7 +55,7 @@ Content-Type: application/json
 ###
 
 # Get all tasks and filtres
-GET http://localhost:3333/api/tasks?sortDirection=desc&categories=1&limit=2&page=2 HTTP/1.1
+GET http://localhost:3100/api/tasks?sortDirection=desc&categories=1&limit=2&page=2 HTTP/1.1
 
 ###
 

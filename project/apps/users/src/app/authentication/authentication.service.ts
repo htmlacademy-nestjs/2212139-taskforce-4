@@ -116,6 +116,7 @@ export class AuthenticationService {
     await this.refreshTokenService.createRefreshSession(refreshTokenPayload);
 
     return {
+      userid: user.id,
       accessToken: await this.jwtService.signAsync(accessTokenPayload),
       refreshToken: await this.jwtService.signAsync(refreshTokenPayload, {
         secret: this.jwtOptions.refreshTokenSecret,

@@ -114,5 +114,5 @@ export class TaskRdo {
     example: '383j3j3jh3432kjjhkjgdf',
   })
   @Expose()
-  public userId: string;
+  public customerId: string;
 }

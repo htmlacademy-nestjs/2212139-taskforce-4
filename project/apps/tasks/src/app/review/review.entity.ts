@@ -18,7 +18,7 @@ export class ReviewEntity implements IEntity<ReviewEntity>, IReview {
     this.review = entity.review;
     this.evaluation = entity.evaluation;
     this.taskId = entity.taskId;
-    this.userId = entity.userId;
+    this.customerId = entity.customerId;
     this.executorId = entity.executorId;
     this.createdAt = new Date();
   }

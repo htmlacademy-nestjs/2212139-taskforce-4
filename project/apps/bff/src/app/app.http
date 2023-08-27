@@ -10,12 +10,14 @@ POST {{baseUrl}}/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Алексей Макеев",
-  "email": "mabori@mail.ru",
-  "city": "Moscow",
+  "email": "user8@gmail.com",
+  "dateBirth": "2000-02-22",
+  "name": "Alexey Makeev",
   "password": "123456",
-  "role": "executor",
-  "dateBirth": "1980-02-22"
+  "city": "Москва",
+  "role": "customer",
+  "avatar": "./images/user.png",
+  "about": "ИП"
 }
 
 ###
@@ -26,14 +28,14 @@ POST {{baseUrl}}/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "mabori@mail.ru",
+  "email": "user8@gmail.com",
   "password": "123456"
 }
 
 ###
 
 # Get user by ID
-GET {{baseUrl}}/users/6455dc009a24b824b6976f84 HTTP/1.1
+GET {{baseUrl}}/users/{{userId}} HTTP/1.1
 Authorization: Bearer {{accessToken}}
 
 ###
@@ -44,18 +46,10 @@ Authorization: Bearer {{refreshToken}}
 
 ###
 
-# Check user token
-POST {{baseUrl}}/auth/check HTTP/1.1
-Authorization: Bearer {{refreshToken}}//accessToken
-
-
-###
-
 # Update password
 PATCH {{baseUrl}}/users/{{userId}}/password HTTP/1.1
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
-
 {
   "password": "123456",
   "newPassword": "098765"
