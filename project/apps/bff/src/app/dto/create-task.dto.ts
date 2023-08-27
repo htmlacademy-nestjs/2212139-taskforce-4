@@ -11,6 +11,7 @@ import {
   MinDate,
 } from 'class-validator';
 import { ValidTask } from '../task.constant';
+import { Transform } from 'class-transformer';
 
 export class CreateTaskDto {
   @ApiProperty({
@@ -34,14 +35,8 @@ export class CreateTaskDto {
     example: 'Электрика',
   })
   @IsString()
-  public category: string;
-
-  @ApiProperty({
-    description: 'Id комментариев',
-    example: '15, 12, 3',
-  })
-  @IsArray()
-  public comments?: number[];
+  @Transform(({ value }) => +value)
+  public categoryId: number;
 
   @ApiProperty({
     description: 'Пояснительное изображние',
@@ -91,13 +86,6 @@ export class CreateTaskDto {
   })
   @IsString()
   public city: string;
-
-  @ApiProperty({
-    description: 'Id заказчика',
-    example: '23938fadakljk3k2kj23jk2j',
-  })
-  @IsString()
-  public userId: string;
 
   @ApiProperty({
     description: 'Текущий статус задачи',

@@ -21,7 +21,11 @@ import { MongoidValidationPipe } from '@project/shared/shared-pipes';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { UpdateBlogUserDto } from '../blog-user/dto/update-blog-user.dto';
 import { CustomerBlogUserRdo } from '../blog-user/rdo/customer-blog-user.rdo';
-import { RequestWithUser, UserRole } from '@project/shared/app-types';
+import {
+  IRequestWithTokenPayload,
+  RequestWithUser,
+  UserRole,
+} from '@project/shared/app-types';
 import { NotifyService } from '../notify/notify.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
@@ -118,5 +122,11 @@ export class AuthenticationController {
   })
   public async refreshToken(@Req() { user }: RequestWithUser) {
     return this.authService.createUserToken(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
+  public async checkToken(@Req() { user: payload }: IRequestWithTokenPayload) {
+    return payload;
   }
 }

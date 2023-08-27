@@ -1,6 +1,6 @@
 import { Expose, Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { ICategory, ITag } from '@project/shared/app-types';
+import { ICategory, IComment, ITag } from '@project/shared/app-types';
 
 export class TaskRdo {
   @ApiProperty({
@@ -103,6 +103,13 @@ export class TaskRdo {
   public responsesCont: number;
 
   @ApiProperty({
+    description: 'Id комментариев.',
+    example: '33',
+  })
+  @Expose()
+  public comments: IComment[];
+
+  @ApiProperty({
     description: 'Количество комментариев.',
     example: '33',
   })
@@ -115,4 +122,11 @@ export class TaskRdo {
   })
   @Expose()
   public userId: string;
+
+  @ApiProperty({
+    description: 'Id исполнителя',
+    example: '383j3j3jh3432kjjhkjgdf',
+  })
+  @Expose()
+  public executorId: string;
 }

@@ -13,17 +13,17 @@ import { HttpService } from '@nestjs/axios';
 import { ApplicationServiceURL } from './app.config';
 import { Request } from 'express';
 import { LoginUserDto } from './dto/login-user.dto';
-import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserRole } from '@project/shared/app-types';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateBlogUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 
 @ApiTags('users')
 @Controller('users')
 @UseFilters(AxiosExceptionFilter)
-export class UsersController {
+export class UserController {
   constructor(private readonly httpService: HttpService) {}
 
   @Post('register')
@@ -94,12 +94,12 @@ export class UsersController {
     } else if (data.role === UserRole.Executor) {
       const completedTasksNumber = (
         await this.httpService.axiosRef.get(
-          `${ApplicationServiceURL.Tasks}/contractor/${id}/count?status=Completed`
+          `${ApplicationServiceURL.Tasks}/executor/${id}/count?status=Completed`
         )
       ).data;
       const failedTasksNumber = (
         await this.httpService.axiosRef.get(
-          `${ApplicationServiceURL.Tasks}/contractor/${id}/count?status=Failed`
+          `${ApplicationServiceURL.Tasks}/executor/${id}/count?status=Failed`
         )
       ).data;
 

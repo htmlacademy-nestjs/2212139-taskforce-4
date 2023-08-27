@@ -51,7 +51,7 @@ export class TaskEntity implements IEntity<TaskEntity>, ITask {
     this.comments = [];
     this.responses = [];
     this.tags = [...entity.tags];
-    this.status = entity.status;
+    this.status = entity.status ? entity.status : 'new';
     this.userId = entity.userId;
     this.executorId = entity.executorId;
     this.createdAt = new Date();

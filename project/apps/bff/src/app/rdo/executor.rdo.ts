@@ -2,7 +2,7 @@ import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { City, UserRole } from '@project/shared/app-types';
 
-export class ExecuterBlogUserRdo {
+export class ExecutorRdo {
   @ApiProperty({
     description: 'Уникальный идентификатор пользователя',
     example: '13',
