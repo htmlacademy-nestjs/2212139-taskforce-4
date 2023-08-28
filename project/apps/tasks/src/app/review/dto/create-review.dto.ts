@@ -36,7 +36,7 @@ export class CreateReviewDto {
     example: 'dlkfjaldkds4',
   })
   @IsString()
-  public customerId: string;
+  public userId: string;
 
   @ApiProperty({
     description: 'Id исполнителя',

@@ -75,7 +75,7 @@ export class TaskRepository
       categoryId,
       status,
       tag,
-      customerId,
+      userId,
       executorId,
     } = query;
     const existingTag = await this.tagService.findByName(tag);
@@ -84,7 +84,7 @@ export class TaskRepository
       where: {
         status,
         city,
-        customerId,
+        userId,
         executorId,
         categoryId,
         tags: { ...(existingTag ? { some: { name: existingTag.name } } : {}) },

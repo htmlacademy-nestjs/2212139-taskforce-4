@@ -24,7 +24,7 @@ export class TaskEntity implements IEntity<TaskEntity>, ITask {
   public tags?: ITag[];
   public categoryId: number;
 
-  public customerId: string;
+  public userId: string;
   public executorId: string;
   public createdAt: Date;
   public updatedAt: Date;
@@ -51,7 +51,7 @@ export class TaskEntity implements IEntity<TaskEntity>, ITask {
     this.responses = [];
     this.tags = [...entity.tags];
     this.status = entity.status ? entity.status : 'new';
-    this.customerId = entity.customerId;
+    this.userId = entity.userId;
     this.executorId = entity.executorId;
     this.createdAt = new Date();
     this.updatedAt = new Date();

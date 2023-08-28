@@ -12,7 +12,7 @@ export class UpdateTaskStatusDto {
     description: 'Уникальный id заказчика.',
     example: '123aldfaldfa456',
   })
-  public customerId: string;
+  public userId: string;
 
   @ApiProperty({
     description: 'Уникальный id исполнителя.',

@@ -11,9 +11,9 @@ Content-Type: application/json
   "address": "Пункты А и Б",
   "deadline":"2023-04-21T08:03:54.941Z",
   "city": "Москва",
-  "customerId": "22",
+  "userId": "22",
   "executorId": "115",
-  "categoryId": 1,
+  "category": "Доставка",
   "tags": "доступно доставка"
 }
 
@@ -45,7 +45,7 @@ Content-Type: application/json
   "address": "Пункты А и Б",
   "deadline":"2023-04-21T08:03:54.941Z",
   "city": "Москва",
-  "customerId": "22",
+  "userId": "22",
   "executerId": "15",
   "categoryId": 1,
   "tags": "доставка"

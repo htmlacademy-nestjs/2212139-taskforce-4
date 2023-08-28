@@ -97,7 +97,7 @@ export class CreateTaskDto {
     example: '23938fadakljk3k2kj23jk2j',
   })
   @IsString()
-  public customerId: string;
+  public userId: string;
 
   @ApiProperty({
     description: 'Текущий статус задачи',

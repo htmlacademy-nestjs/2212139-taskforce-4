@@ -33,7 +33,7 @@ export class TaskQuery {
   public tag?: string;
 
   @IsOptional()
-  public customerId?: string;
+  public userId?: string;
 
   @IsOptional()
   public executorId?: string;
