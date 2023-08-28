@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsArray,
   IsDate,
   IsNumber,
   IsOptional,
@@ -11,7 +10,6 @@ import {
   MinDate,
 } from 'class-validator';
 import { ValidTask } from '../task.constant';
-import { Transform } from 'class-transformer';
 
 export class CreateTaskDto {
   @ApiProperty({
@@ -35,8 +33,7 @@ export class CreateTaskDto {
     example: 'Электрика',
   })
   @IsString()
-  @Transform(({ value }) => +value)
-  public categoryId: number;
+  public category: string;
 
   @ApiProperty({
     description: 'Пояснительное изображние',

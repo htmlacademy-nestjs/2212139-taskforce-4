@@ -77,7 +77,7 @@ Content-Type: application/json
 {
   "title": "Заменить сантехнику",
   "description": "Унитазы, раковины, также трубы и смесители",
-  "categoryId": 1,
+  "category": "Сантехника",
   "price": 1000,
   "address": "ул. Свободы, 21",
   "city": "Moscow",

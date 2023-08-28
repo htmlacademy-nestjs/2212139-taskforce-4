@@ -11,7 +11,6 @@ import {
 import { fillObject } from '@project/util/util-core';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HttpStatusCode } from 'axios';
-import { CommentRdo } from '../comment/rdo/comment.rdo';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewRdo } from './rdo/review.rdo';
