@@ -47,7 +47,7 @@ Authorization: Bearer {{refreshToken}}
 ###
 
 # Update password
-PATCH {{baseUrl}}/users/{{userId}}/password HTTP/1.1
+PATCH {{baseUrl}}/users/change HTTP/1.1
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 {
@@ -70,19 +70,18 @@ Content-Type: application/json
 
 #Create task
 # @name task
-POST {{baseUrl}}/tasks HTTP/1.1
+POST {{baseUrl}}/task HTTP/1.1
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "title": "Заменить сантехнику",
-  "description": "Унитазы, раковины, также трубы и смесители",
+  "title": "Заменить сантехнику полностью",
+  "details": "Унитазы, раковины, также трубы и смесители, Описание не менее 100 символов, очень много как по мне Описание не менее 100 символов, очень много как по мне",
   "category": "Сантехника",
-  "price": 1000,
   "address": "ул. Свободы, 21",
-  "city": "Moscow",
-  "tags": ["услуги", "сантехника"],
-  "userId": "A123"
+  "city": "Москва",
+  "tags": ["услуги", "сантехника", "без воды"],
+  "status": "New"
 }
 
 ###

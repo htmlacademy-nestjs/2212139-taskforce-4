@@ -25,8 +25,6 @@ export class BlogUserRepository
   }
 
   public async findById(id: string): Promise<IUser | null> {
-    console.log(id);
-
     return this.blogUserModel.findOne({ _id: id }).exec();
   }
 

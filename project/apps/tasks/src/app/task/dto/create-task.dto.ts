@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsArray,
   IsDate,
   IsNumber,
   IsOptional,
@@ -35,13 +34,6 @@ export class CreateTaskDto {
   })
   @IsString()
   public category: string;
-
-  @ApiProperty({
-    description: 'Id комментариев',
-    example: '15, 12, 3',
-  })
-  @IsArray()
-  public comments?: number[];
 
   @ApiProperty({
     description: 'Пояснительное изображние',

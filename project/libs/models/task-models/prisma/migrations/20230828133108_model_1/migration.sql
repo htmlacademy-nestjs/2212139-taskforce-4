@@ -65,6 +65,7 @@ CREATE TABLE "reviews" (
     "review_id" SERIAL NOT NULL,
     "task_id" INTEGER NOT NULL,
     "user_id" TEXT NOT NULL,
+    "executor_id" TEXT NOT NULL,
     "review" TEXT NOT NULL DEFAULT '',
     "evaluation" INTEGER NOT NULL DEFAULT 0,
 

@@ -31,10 +31,12 @@ export class TaskController {
   @UseInterceptors(UseridInterceptor)
   @Post('/')
   public async create(@Body() dto: CreateTaskDto) {
+    console.log({ ...dto });
     const { data } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Tasks}/`,
       dto
     );
+
     return data;
   }
 

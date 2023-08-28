@@ -123,8 +123,6 @@ export class AuthenticationController {
   @Patch('change')
   @HttpCode(HttpStatus.OK)
   public async changePassword(@Body() dto: ChangePasswordDto) {
-    console.log(dto);
-
     const userEntity = await this.authService.changePassword(dto);
     return fillObject(LoggedUserRdo, userEntity);
   }

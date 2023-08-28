@@ -21,7 +21,6 @@ export class TaskRepository
 
   public async create(item: TaskEntity): Promise<ITask> {
     const entityData = item.toObject();
-    console.log(entityData);
 
     return await this.prisma.task.create({
       data: {

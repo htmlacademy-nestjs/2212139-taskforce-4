@@ -26,6 +26,7 @@ export class TaskService {
     const category = await this.categoryService.findOrCreate(dto.category);
     const tagsArray = Array.from(new Set(dto.tags)).slice(0, TAGS_MAX_COUNT);
     const tags = await this.tagService.findOrCreateMany(tagsArray);
+
     const taskEntity = new TaskEntity({
       ...dto,
       categoryId: category.categoryId,
