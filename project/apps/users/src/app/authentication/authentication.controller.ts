@@ -71,8 +71,6 @@ export class AuthenticationController {
   @Patch('change')
   @HttpCode(HttpStatus.OK)
   public async updatePassword(@Body() dto: ChangePasswordDto) {
-    console.log('3333');
-
     const userEntity = await this.authService.changePassword(dto);
     return fillObject(LoggedUserRdo, userEntity);
   }
