@@ -42,15 +42,4 @@ export class ResponseController {
     const existResponses = this.responseService.findResponsesByUserId(userId);
     return fillObject(ResponseRdo, existResponses);
   }
-
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Выбран исполнитель, оставивший отклик.',
-    type: ResponseRdo,
-  })
-  @Post('/accept/:id')
-  async acceptResponse(@Param('id') id: number) {
-    const acceptedResponse = await this.responseService.acceptResponse(id);
-    return fillObject(ResponseRdo, acceptedResponse);
-  }
 }

@@ -173,7 +173,8 @@ export class TaskRepository
 
   public async addExecutor(
     taskId: number,
-    executorId: string
+    executorId: string,
+    price: number
   ): Promise<ITask | null> {
     return await this.prisma.task.update({
       where: {
@@ -182,6 +183,7 @@ export class TaskRepository
       data: {
         executorId,
         status: TaskStatus.InWork,
+        price,
       },
       include: {
         category: true,

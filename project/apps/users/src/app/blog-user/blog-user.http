@@ -7,18 +7,7 @@ Content-Type: application/json
   "name": "KeksX",
   "about": "hobby moto",
   "city": "Москва",
-  "specialization": "Курьер"
 }
-
-###
-
-# Get user by ID customer
-GET http://localhost:3333/api/user/customer/f018bc3c-6efd-40e8-8e07-e5dea36dee43 HTTP/1.1
-
-###
-
-# Get user by ID executer
-GET http://localhost:3333/api/user/executer/f018bc3c-6efd-40e8-8e07-e5dea36dee43 HTTP/1.1
 
 ###
 

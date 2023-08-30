@@ -122,14 +122,13 @@ export class AuthenticationController {
   @UseGuards(JwtAuthGuard)
   @Patch('change')
   @HttpCode(HttpStatus.OK)
-  public async changePassword(@Body() dto: ChangePasswordDto) {
+  public async updatePassword(@Body() dto: ChangePasswordDto) {
     const userEntity = await this.authService.changePassword(dto);
     return fillObject(LoggedUserRdo, userEntity);
   }
 
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
-  @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Get a new access/refresh tokens',

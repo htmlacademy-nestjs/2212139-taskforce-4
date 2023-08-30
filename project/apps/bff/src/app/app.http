@@ -51,6 +51,7 @@ PATCH {{baseUrl}}/user/change HTTP/1.1
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 {
+  "email": "user8@gmail.com",
   "password": "123456",
   "newPassword": "098765"
 }

@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Inject,
   Injectable,
   NotFoundException,
@@ -9,6 +10,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { IUser, UserRole } from '@project/shared/app-types';
 import {
   AUTH_USER_EXISTS,
+  AUTH_USER_FORBIDDEN,
   AUTH_USER_NOT_FOUND,
   AUTH_USER_PASSWORD_WRONG,
 } from './authentication.constant';
@@ -102,7 +104,7 @@ export class AuthenticationService {
     const userEntity = await new BlogUserEntity(blogUser).setPassword(
       newPassword
     );
-    return this.blogUserRepository.update(userEntity.id, userEntity);
+    return await this.blogUserRepository.update(userEntity.id, userEntity);
   }
 
   public async createUserToken(user: IUser) {

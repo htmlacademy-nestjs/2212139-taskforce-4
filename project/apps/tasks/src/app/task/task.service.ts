@@ -113,8 +113,6 @@ export class TaskService {
 
     if (!task) throw new NotFoundException(TASK_NOT_FOUND);
     if (task.executorId) throw new BadRequestException(TASK_EXECUTOR_EXISTS);
-    if (executorTaskInWork)
-      throw new BadRequestException(TASK_EXECUTOR_A_HAS_JOB);
 
     return this.taskRepository.setAcceptedResponse(
       task.taskId,
@@ -191,7 +189,7 @@ export class TaskService {
   }
 
   public async addExecutor(taskId: number, dto: UpdateTaskResponseDto) {
-    const { role, userId } = dto;
+    const { role, userId, offerPrice } = dto;
 
     if (role !== UserRole.Executor) {
       throw new ForbiddenException(TASK_CANT_TAKE);
@@ -207,11 +205,18 @@ export class TaskService {
       throw new ForbiddenException(TASK_EXECUTOR_APPOINTED);
     }
 
-    return this.taskRepository.addExecutor(taskId, userId);
+    const executorTaskInWork = this.taskRepository.findExecutorInWork(userId);
+
+    if (executorTaskInWork)
+      throw new BadRequestException(TASK_EXECUTOR_A_HAS_JOB);
+
+    const price = offerPrice ?? task.price;
+
+    return this.taskRepository.addExecutor(taskId, userId, price);
   }
 
   public async addResponse(taskId: number, dto: UpdateTaskResponseDto) {
-    const { role, userId } = dto;
+    const { role, userId, offerPrice } = dto;
 
     if (role !== UserRole.Executor) {
       throw new ForbiddenException(TASK_CANT_TAKE);
@@ -223,9 +228,12 @@ export class TaskService {
       throw new NotFoundException(TASK_NOT_FOUND);
     }
 
+    const price = offerPrice ?? task.price;
+
     const response = this.responseService.create({
       executorId: userId,
       taskId,
+      offerPrice: price,
     });
 
     if (!response) {

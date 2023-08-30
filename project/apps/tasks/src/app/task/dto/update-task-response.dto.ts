@@ -15,4 +15,11 @@ export class UpdateTaskResponseDto {
     required: true,
   })
   public role: UserRole;
+
+  @ApiProperty({
+    description: 'Предлагаемая исполнителем цена работы',
+    example: 99,
+    required: false,
+  })
+  public offerPrice?: number;
 }
