@@ -58,6 +58,35 @@ export class AuthenticationController {
     }
   }
 
+  @ApiResponse({
+    type: LoggedUserRdo,
+    status: HttpStatus.OK,
+    description: 'New password changed.',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Password or Login is wrong.',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Patch('change')
+  @HttpCode(HttpStatus.OK)
+  public async updatePassword(@Body() dto: ChangePasswordDto) {
+    console.log('3333');
+
+    const userEntity = await this.authService.changePassword(dto);
+    return fillObject(LoggedUserRdo, userEntity);
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get a new access/refresh tokens',
+  })
+  public async refreshToken(@Req() { user }: RequestWithUser) {
+    return this.authService.createUserToken(user);
+  }
+
   @UseGuards(LocalAuthGuard)
   @ApiResponse({
     type: LoggedUserRdo,
@@ -108,33 +137,6 @@ export class AuthenticationController {
     } else if (updatedUser.role === UserRole.Executor) {
       return fillObject(ExecuterBlogUserRdo, updatedUser);
     }
-  }
-
-  @ApiResponse({
-    type: LoggedUserRdo,
-    status: HttpStatus.OK,
-    description: 'New password changed.',
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'Password or Login is wrong.',
-  })
-  @UseGuards(JwtAuthGuard)
-  @Patch('change')
-  @HttpCode(HttpStatus.OK)
-  public async updatePassword(@Body() dto: ChangePasswordDto) {
-    const userEntity = await this.authService.changePassword(dto);
-    return fillObject(LoggedUserRdo, userEntity);
-  }
-
-  @UseGuards(JwtRefreshGuard)
-  @Post('refresh')
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Get a new access/refresh tokens',
-  })
-  public async refreshToken(@Req() { user }: RequestWithUser) {
-    return this.authService.createUserToken(user);
   }
 
   @UseGuards(JwtAuthGuard)

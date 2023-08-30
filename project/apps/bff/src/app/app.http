@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:4000/api
 @accessToken = {{login.response.body.$.accessToken}}
 @refreshToken = {{login.response.body.$.refreshToken}}
-@userId = {{newUser.response.body.$.id}}
+@userId = {{login.response.body.$.userid}}
 @taskId = {{task.response.body.$.id}}
 
 # Create a new user
@@ -28,8 +28,8 @@ POST {{baseUrl}}/user/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user8@gmail.com",
-  "password": "123456"
+  "email": "user7@notfound.local",
+  "password": "555555"
 }
 
 ###
@@ -50,9 +50,10 @@ Authorization: Bearer {{refreshToken}}
 PATCH {{baseUrl}}/user/change HTTP/1.1
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
+
 {
-  "email": "user8@gmail.com",
-  "password": "123456",
+  "email": "user7@notfound.local",
+  "password": "555555",
   "newPassword": "098765"
 }
 
@@ -64,7 +65,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "name": "Alexey Makeev",
+  "name": "Алексей Макеев",
 }
 
 ###

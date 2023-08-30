@@ -26,14 +26,14 @@ Content-Type: application/json
 
 {
   "email": "user7@notfound.local",
-  "password": "123456"
+  "password": "555555"
 }
 
 ###
 
 # Change password user
 PATCH http://localhost:3333/api/auth/change HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGVmMzM5ODNjZGY4ZTAwOTBmZWQ2ZjMiLCJlbWFpbCI6InVzZXI3QG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6ImV4ZWN1dG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2OTM0MDUyNDIsImV4cCI6MTY5MzQwNTg0Mn0.l13khVK6NpU_6J8lDNWGdxEwsS3trs1f0v2xuO2Edtw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGVmMzM5ODNjZGY4ZTAwOTBmZWQ2ZjMiLCJlbWFpbCI6InVzZXI3QG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6ImV4ZWN1dG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2OTM0MTY4MTMsImV4cCI6MTY5MzQxNzQxM30.n_cIKj8TsWxKxbM7iB7jCLpUXskHhq-8ugQMjj28ruw
 Content-Type: application/json
 
 {
