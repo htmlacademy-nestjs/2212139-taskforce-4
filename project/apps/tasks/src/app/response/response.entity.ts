@@ -6,8 +6,8 @@ export class ResponseEntity implements IEntity<ResponseEntity>, IResponse {
   public taskId: number;
   public offerPrice: number;
 
-  constructor(comment: IResponse) {
-    this.fillEntity(comment);
+  constructor(resp: IResponse) {
+    this.fillEntity(resp);
   }
 
   public fillEntity(entity: IResponse) {

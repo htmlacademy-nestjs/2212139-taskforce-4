@@ -21,7 +21,7 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 
 @ApiTags('users')
-@Controller('users')
+@Controller('user')
 @UseFilters(AxiosExceptionFilter)
 export class UserController {
   constructor(private readonly httpService: HttpService) {}

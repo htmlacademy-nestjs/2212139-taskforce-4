@@ -18,5 +18,5 @@ export class UpdateTaskStatusDto {
     description: 'Уникальный id исполнителя.',
     example: '1dsf3sdk4sdf5di6',
   })
-  public executorId: string;
+  public executorId?: string;
 }

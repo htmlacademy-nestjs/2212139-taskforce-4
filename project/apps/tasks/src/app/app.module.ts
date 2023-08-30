@@ -5,8 +5,6 @@ import { ReviewModule } from './review/review.module';
 import { TagsModule } from './tag/tag.module';
 import { TaskModule } from './task/task.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ResponseModule } from './response/response.module';
 
 @Module({
@@ -19,7 +17,7 @@ import { ResponseModule } from './response/response.module';
     TaskModule,
     ResponseModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

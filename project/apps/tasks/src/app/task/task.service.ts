@@ -1,25 +1,44 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskEntity } from './task.entity';
-import { IResponse, ITask, TaskStatus } from '@project/shared/app-types';
+import {
+  IResponse,
+  ITask,
+  SortType,
+  TaskStatus,
+  UserRole,
+} from '@project/shared/app-types';
 import { TaskRepository } from './task.repository';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { CategoryService } from '../category/category.service';
 import { TagService } from '../tag/tag.service';
 import { TaskQuery } from './task.query';
-
-const TAGS_MAX_COUNT = 5;
+import {
+  TASK_STATUS_CONDITIONS_WRONG,
+  TASK_FORBIDDEN,
+  TASK_NOT_FOUND,
+  TASK_CANT_TAKE,
+  TASK_EXECUTOR_APPOINTED as TASK_EXECUTOR_APPOINTED,
+  TAGS_MAX_COUNT,
+  TASK_EXECUTOR_EXISTS,
+  TASK_EXECUTOR_A_HAS_JOB,
+  RESPONSE_NOT_FOUND,
+} from './task.constant';
+import { UpdateTaskResponseDto } from './dto/update-task-response.dto';
+import { ResponseService } from '../response/response.service';
 
 @Injectable()
 export class TaskService {
   constructor(
     private readonly taskRepository: TaskRepository,
     private readonly tagService: TagService,
-    private readonly categoryService: CategoryService
+    private readonly categoryService: CategoryService,
+    private readonly responseService: ResponseService
   ) {}
 
   async create(dto: CreateTaskDto): Promise<ITask> {
@@ -55,30 +74,32 @@ export class TaskService {
     dto: UpdateTaskStatusDto
   ): Promise<ITask> {
     const task = await this.taskRepository.findById(taskId);
-    if (!task) throw new NotFoundException('Task not found');
+    if (!task) throw new NotFoundException(TASK_NOT_FOUND);
+
+    if (dto.userId !== task.userId && dto.userId !== task.executorId) {
+      throw new ForbiddenException(TASK_FORBIDDEN);
+    }
 
     switch (task.status) {
       case TaskStatus.New:
-        //TODO: get user in token and compare with task.userId
         if (
           dto.userId === task.userId &&
-          (dto.status === TaskStatus.Canceled ||
-            (dto.status === TaskStatus.InWork && task.executorId))
+          ((dto.status === TaskStatus.Canceled && !task.executorId) ||
+            dto.status === TaskStatus.InWork)
         ) {
-          return this.taskRepository.updateTaskStatus(taskId, dto.status);
+          return this.taskRepository.updateStatus(taskId, dto.status);
         }
         break;
       case TaskStatus.InWork:
-        //TODO: также проверить user === task.executorId
         if (
-          dto.status === TaskStatus.Failed ||
-          dto.status === TaskStatus.Done
+          dto.executorId === task.executorId &&
+          (dto.status === TaskStatus.Failed || dto.status === TaskStatus.Done)
         ) {
-          return this.taskRepository.updateTaskStatus(taskId, dto.status);
+          return this.taskRepository.updateStatus(taskId, dto.status);
         }
         break;
     }
-    throw new BadRequestException('Something went wrong');
+    throw new BadRequestException(TASK_STATUS_CONDITIONS_WRONG);
   }
 
   async setAcceptedResponse(
@@ -90,11 +111,10 @@ export class TaskService {
       acceptedResponse.executorId
     );
 
-    if (!task) throw new NotFoundException('Task not found');
-    if (task.executorId)
-      throw new BadRequestException('The executor already exists');
+    if (!task) throw new NotFoundException(TASK_NOT_FOUND);
+    if (task.executorId) throw new BadRequestException(TASK_EXECUTOR_EXISTS);
     if (executorTaskInWork)
-      throw new BadRequestException('The executor already has a job');
+      throw new BadRequestException(TASK_EXECUTOR_A_HAS_JOB);
 
     return this.taskRepository.setAcceptedResponse(
       task.taskId,
@@ -121,5 +141,98 @@ export class TaskService {
     let count = task.responsesCount + increment;
     count = count < 0 ? 0 : count;
     return this.taskRepository.updateResponsesCounter(taskId, count);
+  }
+
+  async deleteTask(id: number): Promise<void> {
+    this.taskRepository.destroy(id);
+  }
+
+  async getTask(id: number) {
+    return this.taskRepository.findById(id);
+  }
+
+  async getTasks(query: TaskQuery) {
+    return this.taskRepository.find(query);
+  }
+
+  async getNewTasks(userId: string, query: TaskQuery) {
+    return this.taskRepository.find({
+      ...query,
+      userId: userId,
+      status: TaskStatus.New,
+    });
+  }
+
+  async getCustomerTasks(userId: string, query: TaskQuery) {
+    return this.taskRepository.find({
+      ...query,
+      userId: userId,
+      sortType: SortType.CreatedAt,
+    });
+  }
+
+  async getCustomerTasksNumber(userId: string, query: TaskQuery) {
+    return this.taskRepository.countCustomerTasks({ ...query, userId: userId });
+  }
+
+  async getExecutorTasks(userId: string, query: TaskQuery) {
+    return this.taskRepository.find({
+      ...query,
+      executorId: userId,
+      sortType: SortType.Status,
+    });
+  }
+
+  async getExecutorTasksNumber(executorId: string, query: TaskQuery) {
+    return this.taskRepository.countExecutorTasks({
+      ...query,
+      executorId,
+    });
+  }
+
+  public async addExecutor(taskId: number, dto: UpdateTaskResponseDto) {
+    const { role, userId } = dto;
+
+    if (role !== UserRole.Executor) {
+      throw new ForbiddenException(TASK_CANT_TAKE);
+    }
+
+    const task = await this.taskRepository.findById(taskId);
+
+    if (!task) {
+      throw new NotFoundException(TASK_NOT_FOUND);
+    }
+
+    if (task.executorId) {
+      throw new ForbiddenException(TASK_EXECUTOR_APPOINTED);
+    }
+
+    return this.taskRepository.addExecutor(taskId, userId);
+  }
+
+  public async addResponse(taskId: number, dto: UpdateTaskResponseDto) {
+    const { role, userId } = dto;
+
+    if (role !== UserRole.Executor) {
+      throw new ForbiddenException(TASK_CANT_TAKE);
+    }
+
+    const task = await this.taskRepository.findById(taskId);
+
+    if (!task) {
+      throw new NotFoundException(TASK_NOT_FOUND);
+    }
+
+    const response = this.responseService.create({
+      executorId: userId,
+      taskId,
+    });
+
+    if (!response) {
+      throw new NotFoundException(RESPONSE_NOT_FOUND);
+    }
+
+    const responseId = (await response).responseId;
+    return await this.taskRepository.addResponse(responseId, taskId);
   }
 }

@@ -17,13 +17,12 @@ Content-Type: application/json
 
 ###
 
-# Delete task by id
-DELETE http://localhost:3100/api/tasks/3 HTTP/1.1
-
-###
-
 # Get task by id
 GET http://localhost:3100/api/tasks/3 HTTP/1.1
+
+###
+# Delete task by id
+DELETE http://localhost:3100/api/tasks/3 HTTP/1.1
 
 ###
 

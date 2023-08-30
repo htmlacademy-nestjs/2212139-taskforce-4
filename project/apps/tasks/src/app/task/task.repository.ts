@@ -125,6 +125,22 @@ export class TaskRepository
     });
   }
 
+  public async countCustomerTasks({ userId, status }: TaskQuery) {
+    return this.prisma.task.count({
+      where: {
+        AND: [{ userId }, { status }],
+      },
+    });
+  }
+
+  public async countExecutorTasks({ executorId, status }: TaskQuery) {
+    return this.prisma.task.count({
+      where: {
+        AND: [{ executorId }, { status }],
+      },
+    });
+  }
+
   public async updateCommentsCounter(taskId: number, commentsCount: number) {
     this.prisma.task.update({
       where: { taskId },
@@ -139,13 +155,53 @@ export class TaskRepository
     });
   }
 
-  public async updateTaskStatus(
+  public async updateStatus(
     taskId: number,
     status: TaskStatus
   ): Promise<ITask> {
     return this.prisma.task.update({
       where: { taskId },
       data: { status },
+      include: {
+        category: true,
+        comments: true,
+        tags: true,
+        responses: true,
+      },
+    });
+  }
+
+  public async addExecutor(
+    taskId: number,
+    executorId: string
+  ): Promise<ITask | null> {
+    return await this.prisma.task.update({
+      where: {
+        taskId,
+      },
+      data: {
+        executorId,
+        status: TaskStatus.InWork,
+      },
+      include: {
+        category: true,
+        comments: true,
+        tags: true,
+        responses: true,
+      },
+    });
+  }
+
+  public async addResponse(responseId: number, taskId: number): Promise<ITask> {
+    return await this.prisma.task.update({
+      where: {
+        taskId,
+      },
+      data: {
+        responses: {
+          connect: [{ responseId }],
+        },
+      },
       include: {
         category: true,
         comments: true,

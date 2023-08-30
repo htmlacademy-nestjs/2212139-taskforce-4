@@ -51,11 +51,13 @@ export class TaskController {
         `${ApplicationServiceURL.Users}/${data.userId}`
       )
     ).data;
-    const contractorData = (
+
+    const executorData = (
       await this.httpService.axiosRef.get(
-        `${ApplicationServiceURL.Users}/${data.contractorId}`
+        `${ApplicationServiceURL.Users}/${data.executorId}`
       )
     ).data;
+
     const commentsData = (
       await this.httpService.axiosRef.get(
         `${ApplicationServiceURL.Comments}/task/${id}`
@@ -68,7 +70,7 @@ export class TaskController {
     return {
       ...data,
       user: userData,
-      contractor: contractorData,
+      executor: executorData,
       comments: commentsData,
     };
   }

@@ -3,12 +3,11 @@ import { ResponseService } from './response.service';
 import { ResponseController } from './response.controller';
 import { ResponseRepository } from './response.repository';
 import { PrismaModule } from '../prisma/prisma.module';
-import { TaskModule } from '../task/task.module';
 
 @Module({
-  imports: [PrismaModule, TaskModule],
+  imports: [PrismaModule],
   controllers: [ResponseController],
   providers: [ResponseService, ResponseRepository],
-  exports: [ResponseRepository],
+  exports: [ResponseRepository, ResponseService],
 })
 export class ResponseModule {}
