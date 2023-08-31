@@ -8,30 +8,30 @@ const DEFAULT_SMTP_PORT = 25;
 const SYSTEM_OF_CALCULUS = 10;
 
 export interface NotifyConfig {
-  environment: string;
+  environment?: string;
   port: number;
   db: {
-    host: string;
+    host?: string;
     port: number;
-    user: string;
-    name: string;
-    password: string;
-    authBase: string;
+    user?: string;
+    name?: string;
+    password?: string;
+    authBase?: string;
   };
   rabbit: {
-    host: string;
-    password: string;
-    user: string;
-    queue: string;
-    exchange: string;
+    host?: string;
+    password?: string;
+    user?: string;
+    queue?: string;
+    exchange?: string;
     port: number;
   };
   mail: {
-    host: string;
+    host?: string;
     port: number;
-    user: string;
-    password: string;
-    from: string;
+    user?: string;
+    password?: string;
+    from?: string;
   };
 }
 
